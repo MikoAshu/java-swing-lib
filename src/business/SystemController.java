@@ -9,6 +9,8 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
 
+import javax.xml.crypto.Data;
+
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
 	
@@ -40,6 +42,31 @@ public class SystemController implements ControllerInterface {
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
 	}
-	
-	
+
+	@Override
+	public Book getBook(String isbn) {
+		DataAccess da = new DataAccessFacade();
+		return da.getBookByISBN(isbn);
+	}
+
+	@Override
+	public List<Book> readAllBooks() {
+		DataAccess da = new DataAccessFacade();
+		List<Book> books = new ArrayList<>();
+		books.addAll(da.readBooksMap().values());
+		return books;
+	}
+
+	@Override
+	public void updateBook(Book book) {
+		if (book == null) {
+			System.out.println("null book can't be given");
+			return;
+		}
+		DataAccess da = new DataAccessFacade();
+		da.updateBook(book);
+
+	}
+
+
 }
