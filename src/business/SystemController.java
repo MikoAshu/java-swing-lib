@@ -11,6 +11,7 @@ import dataaccess.User;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
+	public static final SystemController INSTANCE = new SystemController();
 	
 	public void login(String id, String password) throws LoginException {
 		DataAccess da = new DataAccessFacade();

@@ -65,14 +65,15 @@ public class LibrarySystem extends JFrame implements LibWindow {
 	}
     
     private void setPathToImage() {
-    	String currDirectory = System.getProperty("user.dir");
-    	pathToImage = currDirectory+"\\src\\librarysystem\\library.jpg";
+//    	String currDirectory = System.getProperty("user.dir");
+    	pathToImage = ".\\src\\librarysystem\\library.jpg";
     }
     
     private void insertSplashImage() {
         ImageIcon image = new ImageIcon(pathToImage);
 		mainPanel.add(new JLabel(image));	
     }
+    
     private void createMenus() {
     	menuBar = new JMenuBar();
 		menuBar.setBorder(BorderFactory.createRaisedBevelBorder());

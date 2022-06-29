@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 
 import business.ControllerInterface;
-
+import business.LibrarySystemException;
 import business.SystemController;
 
 
@@ -44,8 +44,8 @@ public class LoginWindow extends JFrame implements LibWindow {
 	private JButton loginButton;
 	private JButton logoutButton;
 	
-	
-	
+	LibrarySystem librarySystem;
+	private final ControllerInterface systemControler = SystemController.INSTANCE;
 	
 	public boolean isInitialized() {
 		return isInitialized;
@@ -186,6 +186,25 @@ public class LoginWindow extends JFrame implements LibWindow {
     	
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
+                String userSt = username.getText().trim();
+                String passwordSt = password.getText().trim();
+                
+                if (passwordSt.length() == 0) {
+                	JOptionPane.showMessageDialog(this, "Username is required!");
+                }
+                else if (userSt.length() == 0) {
+                	JOptionPane.showMessageDialog(this, "Password is required!");
+                } else {
+//                    try {
+////                        sc.login(uID, pwd);
+////                        updateLeftPanel(SystemController.currentAuth);
+////                        displayInfo("Login successful");
+//                        librarySystem.repaint();
+//                    } catch (LibrarySystemException e) {
+//                        displayError("Error! " + e.getMessage());
+                        JOptionPane.showMessageDialog(this,"Error while logging in : ");
+                    //}
+                }
     			JOptionPane.showMessageDialog(this,"Successful Login");
     				
     		});
