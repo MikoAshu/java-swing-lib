@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import business.Book;
 import business.LibraryMember;
+import business.LibrarySystemException;
 import dataaccess.DataAccessFacade.StorageType;
 
 public interface DataAccess { 

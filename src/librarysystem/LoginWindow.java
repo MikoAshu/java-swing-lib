@@ -18,7 +18,9 @@ import javax.swing.JOptionPane;
 
 import business.ControllerInterface;
 import business.LibrarySystemException;
+import business.LoginException;
 import business.SystemController;
+import dataaccess.Auth;
 
 
 public class LoginWindow extends JFrame implements LibWindow {
@@ -45,7 +47,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	private JButton logoutButton;
 	
 	LibrarySystem librarySystem;
-	private final ControllerInterface systemControler = SystemController.INSTANCE;
+	private final ControllerInterface systemControler = SystemController.getInstance();
 	
 	public boolean isInitialized() {
 		return isInitialized;
@@ -177,6 +179,7 @@ public class LoginWindow extends JFrame implements LibWindow {
     		rightTextPanel.add(bottomText,BorderLayout.CENTER);
     	}
     	
+
     	private void addBackButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
     			LibrarySystem.hideAllWindows();
@@ -195,17 +198,16 @@ public class LoginWindow extends JFrame implements LibWindow {
                 else if (userSt.length() == 0) {
                 	JOptionPane.showMessageDialog(this, "Password is required!");
                 } else {
-//                    try {
-////                        sc.login(uID, pwd);
-////                        updateLeftPanel(SystemController.currentAuth);
+                    try {
+                		systemControler.login(userSt, passwordSt);
+                        librarySystem.showWindows(SystemController.currentAuth);
 ////                        displayInfo("Login successful");
-//                        librarySystem.repaint();
-//                    } catch (LibrarySystemException e) {
-//                        displayError("Error! " + e.getMessage());
-                        JOptionPane.showMessageDialog(this,"Error while logging in : ");
-                    //}
+                		JOptionPane.showMessageDialog(this,"Successful Login");
+                        librarySystem.repaint();
+                    } catch (LoginException ex) {
+                    	JOptionPane.showMessageDialog(this,"Error while logging in : " + ex.getMessage());
+                    }
                 }
-    			JOptionPane.showMessageDialog(this,"Successful Login");
     				
     		});
     	}

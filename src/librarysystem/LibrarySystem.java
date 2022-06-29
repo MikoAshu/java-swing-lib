@@ -17,16 +17,19 @@ import javax.swing.JPanel;
 
 import business.ControllerInterface;
 import business.SystemController;
+import dataaccess.Auth;
 
 
 public class LibrarySystem extends JFrame implements LibWindow {
-	ControllerInterface ci = new SystemController();
+	ControllerInterface ci = SystemController.getInstance();
 	public final static LibrarySystem INSTANCE =new LibrarySystem();
+	
 	JPanel mainPanel;
 	JMenuBar menuBar;
     JMenu options;
     JMenuItem login, allBookIds, allMemberIds; 
     String pathToImage;
+    Auth auth;
     private boolean isInitialized = false;
     
     private static LibWindow[] allWindows = { 
@@ -43,6 +46,26 @@ public class LibrarySystem extends JFrame implements LibWindow {
 			
 		}
 	}
+    
+    public void showWindows(Auth auth) {
+        if (auth == Auth.BOTH) {
+        	AllMemberIdsWindow.INSTANCE.init();
+        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        }
+        else if (auth == Auth.ADMIN) {
+        	AllMemberIdsWindow.INSTANCE.init();
+        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        }
+        else if (auth == Auth.LIBRARIAN) {
+        	AllMemberIdsWindow.INSTANCE.init();
+        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        }
+        else {
+        	
+        };
+    }
+   
+    
     
     
     private LibrarySystem() {}
@@ -65,8 +88,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 	}
     
     private void setPathToImage() {
-//    	String currDirectory = System.getProperty("user.dir");
-    	pathToImage = ".\\src\\librarysystem\\library.jpg";
+    	String currDirectory = System.getProperty("user.dir");
+    	pathToImage = currDirectory + "\\src\\librarysystem\\library.jpg";
     }
     
     private void insertSplashImage() {
@@ -107,6 +130,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		}
     	
     }
+    
     class AllBookIdsListener implements ActionListener {
 
 		@Override
