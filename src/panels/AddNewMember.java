@@ -204,8 +204,8 @@ public class AddNewMember {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(99, 171, 300, 300);
-		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/Member-Homepages-300x300.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/member.png")));
+		lblNewLabel_1.setBounds(95, 174, 300, 300);
 		panel.add(lblNewLabel_1);
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1094, 660);
