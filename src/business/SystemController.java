@@ -17,17 +17,17 @@ import javax.xml.crypto.Data;
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
 	private static SystemController INSTANCE;
-	
+
 	private SystemController() {
 	}
-	
+
 	public static SystemController getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new SystemController();
 		}
 		return INSTANCE;
 	}
-	
+
 	public void login(String id, String password) throws LoginException {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, User> map = da.readUserMap();
@@ -41,7 +41,7 @@ public class SystemController implements ControllerInterface {
 		currentAuth = map.get(id).getAuthorization();
 		
 	}
-	
+
 	@Override
 	public List<String> allMemberIds() {
 		DataAccess da = new DataAccessFacade();
@@ -57,7 +57,26 @@ public class SystemController implements ControllerInterface {
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
 	}
-
+	@Override
+    public void addMember(String id, String firstName, String lastName, String cell, String street, String city, String state, String zip) throws LibrarySystemException {
+        if (id.length() == 0 || firstName.length() == 0 || lastName.length() == 0
+                || cell.length() == 0 || street.length() == 0 || city.length() == 0
+                || state.length() == 0 || zip.length() == 0) {
+        	throw new LibrarySystemException("All fields must be non-empty");
+        }
+        Address address = new Address(street, city, state, zip);
+        if (searchMember(id) != null) {
+            throw new LibrarySystemException("Library Member with ID " + id + " already exists");
+        }
+        DataAccess da = new DataAccessFacade();
+        LibraryMember member = new LibraryMember(id, firstName, lastName, cell, address);
+        da.saveMember(member);
+    }
+	@Override
+    public LibraryMember searchMember(String memberId) {
+        DataAccess da = new DataAccessFacade();
+        return da.searchMember(memberId);
+    }
 	@Override
 	public Book getBook(String isbn) {
 		DataAccess da = new DataAccessFacade();
@@ -173,4 +192,5 @@ public class SystemController implements ControllerInterface {
         return records;
     }
 
+	
 }

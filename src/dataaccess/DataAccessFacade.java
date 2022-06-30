@@ -179,8 +179,14 @@ public class DataAccessFacade implements DataAccess {
 	        members.put(member.getMemberId(), member);
 	        saveToStorage(StorageType.MEMBERS, members);
 	}
+	public void saveMember(LibraryMember member) {
+        HashMap<String, LibraryMember> members = readMemberMap();
+        String memberId = member.getMemberId();
+        members.put(memberId, member);
+        saveToStorage(StorageType.MEMBERS, members);
+    }
 	
-    @Override
+	@Override
     public LibraryMember searchMember(String memberId) {
         HashMap<String, LibraryMember> members = readMemberMap();
         if (members.containsKey(memberId)) {
