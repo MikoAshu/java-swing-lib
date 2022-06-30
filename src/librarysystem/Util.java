@@ -73,4 +73,14 @@ public class Util {
 		int frameWidth = f.getSize().width;
 		f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
 	}
+	
+//	public static void displayError(String msg) {
+//		statusBar.setForeground(Util.ERROR_MESSAGE_COLOR);
+//		statusBar.setText(msg);
+//	}
+	
+//	public static void displayInfo(String msg) {
+//		statusBar.setForeground(Util.INFO_MESSAGE_COLOR);
+//		statusBar.setText(msg);
+//	}
 }
