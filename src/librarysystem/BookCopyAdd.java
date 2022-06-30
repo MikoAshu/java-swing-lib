@@ -18,7 +18,7 @@ public class BookCopyAdd extends JFrame {
 	private JTextField isbnText;
 
 	public BookCopyAdd() {
-		systemController = new SystemController();
+		systemController =  SystemController.getInstance();
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		defineTopPanel();
