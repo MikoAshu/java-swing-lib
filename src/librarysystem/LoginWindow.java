@@ -46,7 +46,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	private JButton loginButton;
 	private JButton logoutButton;
 	
-	LibrarySystem librarySystem;
+	LibrarySystem librarySystem = LibrarySystem.INSTANCE;
 	private final ControllerInterface systemControler = SystemController.getInstance();
 	
 	public boolean isInitialized() {

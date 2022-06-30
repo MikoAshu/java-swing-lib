@@ -48,25 +48,23 @@ public class LibrarySystem extends JFrame implements LibWindow {
 	}
     
     public void showWindows(Auth auth) {
+    	this.auth = auth;
         if (auth == Auth.BOTH) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllBookIdsPage();
+        	showAllMembersPage();
         }
         else if (auth == Auth.ADMIN) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllMembersPage();
         }
         else if (auth == Auth.LIBRARIAN) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllBookIdsPage();
         }
         else {
         	
         };
+        setMenuItems();
     }
    
-    
-    
     
     private LibrarySystem() {}
     
@@ -118,6 +116,25 @@ public class LibrarySystem extends JFrame implements LibWindow {
  	   options.add(allMemberIds);
     }
     
+    private void setMenuItems() {
+        if (auth == null) {
+        	return;
+        } else if (auth == Auth.BOTH) {
+        	login = new JMenuItem("Logout");
+        }
+        else if (auth == Auth.ADMIN) {
+        	login = new JMenuItem("Logout");
+        }
+        else if (auth == Auth.LIBRARIAN) {
+        	login = new JMenuItem("Logout");
+        }
+        else {
+        	
+        };
+        options.remove(login);
+        options.add(login);
+    }
+    
     class LoginListener implements ActionListener {
 
 		@Override
@@ -135,21 +152,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LibrarySystem.hideAllWindows();
-			AllBookIdsWindow.INSTANCE.init();
-			
-			List<String> ids = ci.allBookIds();
-			Collections.sort(ids);
-			StringBuilder sb = new StringBuilder();
-			for(String s: ids) {
-				sb.append(s + "\n");
-			}
-			System.out.println(sb.toString());
-			AllBookIdsWindow.INSTANCE.setData(sb.toString());
-			AllBookIdsWindow.INSTANCE.pack();
-			//AllBookIdsWindow.INSTANCE.setSize(660,500);
-			Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
-			AllBookIdsWindow.INSTANCE.setVisible(true);
+			showAllBookIdsPage();
 			
 		}
     	
@@ -159,35 +162,55 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     	@Override
 		public void actionPerformed(ActionEvent e) {
-			LibrarySystem.hideAllWindows();
-			AllMemberIdsWindow.INSTANCE.init();
-			AllMemberIdsWindow.INSTANCE.pack();
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
-			
-			
-			LibrarySystem.hideAllWindows();
-			AllBookIdsWindow.INSTANCE.init();
-			
-			List<String> ids = ci.allMemberIds();
-			Collections.sort(ids);
-			StringBuilder sb = new StringBuilder();
-			for(String s: ids) {
-				sb.append(s + "\n");
-			}
-			System.out.println(sb.toString());
-			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
-			AllMemberIdsWindow.INSTANCE.pack();
-			//AllMemberIdsWindow.INSTANCE.setSize(660,500);
-			Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
-			
+    		showAllMembersPage();	
 			
 		}
     	
     }
+    private void showAllBookIdsPage() {
+		LibrarySystem.hideAllWindows();
+		AllBookIdsWindow.INSTANCE.init();
+		
+		List<String> ids = ci.allBookIds();
+		Collections.sort(ids);
+		StringBuilder sb = new StringBuilder();
+		for(String s: ids) {
+			sb.append(s + "\n");
+		}
+		System.out.println(sb.toString());
+		AllBookIdsWindow.INSTANCE.setData(sb.toString());
+		AllBookIdsWindow.INSTANCE.pack();
+		//AllBookIdsWindow.INSTANCE.setSize(660,500);
+		Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
+		AllBookIdsWindow.INSTANCE.setVisible(true);
+    }
+    
+    private void showAllMembersPage() {
+		LibrarySystem.hideAllWindows();
+		AllMemberIdsWindow.INSTANCE.init();
+		AllMemberIdsWindow.INSTANCE.pack();
+		AllMemberIdsWindow.INSTANCE.setVisible(true);
+		
+		
+		LibrarySystem.hideAllWindows();
+		AllBookIdsWindow.INSTANCE.init();
+		
+		List<String> ids = ci.allMemberIds();
+		Collections.sort(ids);
+		StringBuilder sb = new StringBuilder();
+		for(String s: ids) {
+			sb.append(s + "\n");
+		}
+		System.out.println(sb.toString());
+		AllMemberIdsWindow.INSTANCE.setData(sb.toString());
+		AllMemberIdsWindow.INSTANCE.pack();
+		AllMemberIdsWindow.INSTANCE.setSize(660,500);
+		Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
+		AllMemberIdsWindow.INSTANCE.setVisible(true);
+    }
 
 	@Override
-	public boolean isInitialized() {
+ 	public boolean isInitialized() {
 		return isInitialized;
 	}
 
