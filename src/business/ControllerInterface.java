@@ -13,5 +13,7 @@ public interface ControllerInterface {
 	public List<String> allBookIds();
 	public void addMember(String id, String firstName, String lastName, String cell,
             String street, String city, String state, String zip) throws LibrarySystemException;
-	
+	Book getBook(String isbn);
+	List<Book> readAllBooks();
+	void updateBook(Book book);
 }

@@ -9,11 +9,24 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
 
+import javax.xml.crypto.Data;
+
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
-	
+	private static SystemController INSTANCE;
+
+	private SystemController() {
+	}
+
+	public static SystemController getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new SystemController();
+		}
+		return INSTANCE;
+	}
+
 	 public static final SystemController INSTANCE = new SystemController();
-	
+
 	public void login(String id, String password) throws LoginException {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, User> map = da.readUserMap();
@@ -27,6 +40,7 @@ public class SystemController implements ControllerInterface {
 		currentAuth = map.get(id).getAuthorization();
 		
 	}
+
 	@Override
 	public List<String> allMemberIds() {
 		DataAccess da = new DataAccessFacade();
@@ -62,6 +76,30 @@ public class SystemController implements ControllerInterface {
         DataAccess da = new DataAccessFacade();
         return da.searchMember(memberId);
     }
-	
+	@Override
+	public Book getBook(String isbn) {
+		DataAccess da = new DataAccessFacade();
+		return da.getBookByISBN(isbn);
+	}
+
+	@Override
+	public List<Book> readAllBooks() {
+		DataAccess da = new DataAccessFacade();
+		List<Book> books = new ArrayList<>();
+		books.addAll(da.readBooksMap().values());
+		return books;
+	}
+
+	@Override
+	public void updateBook(Book book) {
+		if (book == null) {
+			System.out.println("null book can't be given");
+			return;
+		}
+		DataAccess da = new DataAccessFacade();
+		da.updateBook(book);
+
+	}
+
 	
 }
