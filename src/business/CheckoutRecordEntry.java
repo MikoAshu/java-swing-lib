@@ -2,24 +2,24 @@ package business;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.Calendar;
 
 final public class CheckoutRecordEntry implements Serializable {
-    private final LocalDate dueDate;
-    private final LocalDate checkoutDate;
+    private final Calendar dueDate;
+    private final Calendar checkoutDate;
     private final BookCopy bookCopy;
 
-    public CheckoutRecordEntry(LocalDate checkoutDate, LocalDate dueDate, BookCopy bookCopy) {
+    public CheckoutRecordEntry(Calendar checkoutDate, Calendar dueDate, BookCopy bookCopy) {
         this.dueDate = dueDate;
         this.bookCopy = bookCopy;
         this.checkoutDate = checkoutDate;
     }
 
-    public LocalDate getDueDate() {
+    public Calendar getDueDate() {
         return dueDate;
     }
 
-    public LocalDate getCheckoutDate() {
+    public Calendar getCheckoutDate() {
         return checkoutDate;
     }
 
