@@ -25,8 +25,6 @@ public class SystemController implements ControllerInterface {
 		return INSTANCE;
 	}
 
-	 public static final SystemController INSTANCE = new SystemController();
-
 	public void login(String id, String password) throws LoginException {
 		DataAccess da = new DataAccessFacade();
 		HashMap<String, User> map = da.readUserMap();

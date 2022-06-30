@@ -24,7 +24,7 @@ import java.awt.SystemColor;
 
 public class AddNewMember {
 	
-	ControllerInterface controllerInterface = SystemController.INSTANCE;
+	ControllerInterface controllerInterface = SystemController.getInstance();
 
 	private JFrame frame;
 	private JTextField id;
