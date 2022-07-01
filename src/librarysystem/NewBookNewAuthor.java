@@ -18,4 +18,7 @@ public class NewBookNewAuthor extends JFrame {
         authors = new ArrayList<>();
     }
 
+    private void addNewAuthor() throws LibrarySystemException {
+        authors.add(sc.createNewAuthor("", "", "" ,"" ,null));
+    }
 }
