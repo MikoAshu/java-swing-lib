@@ -7,6 +7,7 @@ import business.SystemController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class AddNewBook extends JFrame {
     public JPanel getMainPanel() {
@@ -16,7 +17,9 @@ public class AddNewBook extends JFrame {
     RuleSet ruleSet;
     private JPanel topPanel;
     private JPanel mainPanel;
-    private JComboBox<Author> chooseAuthor;
+    private JList<Author> chooseAuthor;
+    private JScrollPane scrollPane;
+    private DefaultListModel<Author> listModel;
     private JPanel outerMiddle;
 
     private JTextField bookISBN;
@@ -95,7 +98,13 @@ public class AddNewBook extends JFrame {
         authFirstNameField = new JTextField(10);
         authPhoneNumberField = new JTextField(10);
         Author[] authors = systemController.getAuthors();
-        chooseAuthor = new JComboBox<>(authors);
+        listModel = new DefaultListModel<>();
+        populateModel(authors);
+        chooseAuthor = new JList<>(listModel);
+        chooseAuthor.setVisibleRowCount(4);
+        chooseAuthor.setFixedCellWidth(150);
+        scrollPane = new JScrollPane(chooseAuthor);
+        scrollPane.setPreferredSize(new Dimension(chooseAuthor.getWidth() + 1, chooseAuthor.getHeight()));
 
         leftPanel.add(authFirstNameLabel);
         leftPanel.add(Box.createRigidArea(new Dimension(0, 12)));
@@ -124,7 +133,7 @@ public class AddNewBook extends JFrame {
             try {
                 ruleSet.applyRules(AddNewBook.this);
                 systemController.addNewBook(getBookISBNValue(), getTitleValue(),
-                        Integer.parseInt(getMaxCheckoutValue()), (Author)chooseAuthor.getSelectedItem());
+                        Integer.parseInt(getMaxCheckoutValue()), chooseAuthor.getSelectedValuesList());
                 JOptionPane.showMessageDialog(this, "New Book: " + getTitleValue() + " successfully added!",
                         "Add New Book", JOptionPane.INFORMATION_MESSAGE, null);
                 clearData();
@@ -138,6 +147,12 @@ public class AddNewBook extends JFrame {
         addBookButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         addBookButtonPanel.add(addBookButton);
         outerMiddle.add(addBookButtonPanel, BorderLayout.CENTER);
+    }
+
+    private void populateModel(Author[] authors) {
+        for (Author author : authors) {
+            listModel.addElement(author);
+        }
     }
 
     public static void main(String[] args) {

@@ -17,5 +17,5 @@ public class NewBookNewAuthor extends JFrame {
         sc = SystemController.getInstance();
         authors = new ArrayList<>();
     }
-    
+
 }

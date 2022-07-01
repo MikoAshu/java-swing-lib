@@ -111,11 +111,9 @@ public class SystemController implements ControllerInterface {
 	}
 
 	@Override
-	public void addNewBook(String isbn, String title, int maxCheckoutLength, Author author) throws LibrarySystemException {
-		if (isbn == null || title == null || author == null)
+	public void addNewBook(String isbn, String title, int maxCheckoutLength, List<Author> authors) throws LibrarySystemException {
+		if (isbn == null || title == null || authors == null)
 			throw new LibrarySystemException("Empty fields is not allowed");
-		List<Author> authors = new ArrayList<>();
-		authors.add(author);
 		Book b = new Book(isbn, title, maxCheckoutLength, authors);
 		b.addCopy();
 		DataAccess da = new DataAccessFacade();
