@@ -122,5 +122,26 @@ public class SystemController implements ControllerInterface {
 		da.updateBook(b);
 	}
 
+	@Override
+	public Author createNewAuthor(String firstName, String lastName, String phone, String bio, Address address) throws LibrarySystemException{
+		if (firstName == null || firstName.equals("") ||
+				lastName == null || lastName.equals("") ||
+				phone == null || phone.equals("") ||
+				bio == null || bio.equals("") ||
+				address == null)
+			throw new LibrarySystemException("Invalid argument for Author");
+		return new Author(firstName, lastName, phone, address, bio);
+	}
+
+	@Override
+	public Address createNewAddress(String street, String city, String state, String zip) throws LibrarySystemException {
+		if (street == null || street.equals("") ||
+				city == null || city.equals("") ||
+				state == null || state.equals("") ||
+				zip == null || zip.equals(""))
+			throw new LibrarySystemException("No Empty fields allowed");
+ 		return new Address(street, city, state, zip);
+	}
+
 
 }
