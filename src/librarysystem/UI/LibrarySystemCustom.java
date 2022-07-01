@@ -25,6 +25,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -155,14 +156,16 @@ public class LibrarySystemCustom extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-//				AddNewMember abcp = new AddNewMember();
-//		        JPanel addBookCopyPanel = abcp.getMainPanel();
+				new AddNewMember();
+				INSTANCE.setVisible(false);
+//				mem.
+////		        JPanel addBookCopyPanel = abcp.getMainPanel();
 //		        contentPane.remove(menuPanel);
-//		        addBookCopyPanel.setLayout(gbl_menuPanel);
+////		        addBookCopyPanel.setLayout(gbl_menuPanel);
 //		        
-//		        containerPanel.add(addBookCopyPanel);
+////		        containerPanel.add(addBookCopyPanel);
 //		        lblMainLabel.setText("Add Member");
-//		        contentPane.add(containerPanel, gbc_menuPanel);
+////		        contentPane.add(mem, gbc_menuPanel);
 //		        frame.invalidate();
 //		        frame.validate();
 //		        frame.repaint();
@@ -259,17 +262,18 @@ public class LibrarySystemCustom extends JFrame {
 	}
 
 	public void renderMainPanel() {
-		if (frame != null) contentPane.remove(containerPanel);
+		if (frame != null) contentPane.removeAll();
 		
 		contentPane.add(menuPanel, gbc_menuPanel);
+		contentPane.add(topPanel, gbc_topPanel);
 		
 		if (frame != null) {
 			lblMainLabel.setText("MIU - LMS");
-	        frame.invalidate();
+	        frame.revalidate();
 	        frame.validate();
 	        frame.repaint();
 		} else {
-			contentPane.add(topPanel, gbc_topPanel);
+			
 		}
 	}
 

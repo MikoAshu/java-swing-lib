@@ -195,6 +195,7 @@ public class SystemController implements ControllerInterface {
         }
         return records;
     }
+    
     @Override
     public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException {
         LibraryMember member = searchMember(memberId);

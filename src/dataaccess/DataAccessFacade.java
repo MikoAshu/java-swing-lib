@@ -171,14 +171,13 @@ public class DataAccessFacade implements DataAccess {
 		private static final long serialVersionUID = 5399827794066637059L;
 	}
 
-
-
 	@Override
 	public void updateMember(LibraryMember member) {
 	        HashMap<String, LibraryMember> members = readMemberMap();
 	        members.put(member.getMemberId(), member);
 	        saveToStorage(StorageType.MEMBERS, members);
 	}
+	
 	public void saveMember(LibraryMember member) {
         HashMap<String, LibraryMember> members = readMemberMap();
         String memberId = member.getMemberId();

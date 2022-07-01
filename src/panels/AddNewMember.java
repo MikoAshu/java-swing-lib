@@ -27,6 +27,7 @@ public class AddNewMember {
 	ControllerInterface controllerInterface = SystemController.getInstance();
 
 	private JFrame frame;
+	private JPanel mainPanel;
 	private JTextField id;
 	private JTextField firstName;
 	private JTextField lastName;
@@ -204,7 +205,7 @@ public class AddNewMember {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/member.png")));
+//		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/member.png")));
 		lblNewLabel_1.setBounds(95, 174, 300, 300);
 		panel.add(lblNewLabel_1);
 		frame.setBackground(Color.WHITE);

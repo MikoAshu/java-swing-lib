@@ -168,7 +168,13 @@ public class BookCopyAdd {
 	
 	private void backToMainListener(JButton a) {
 		a.addActionListener(e -> {
-			LibrarySystemCustom.INSTANCE.renderMainPanel();
+			mainPanel.removeAll();
+			mainPanel.revalidate();
+			mainPanel.repaint();
+			
+			outerMiddle.removeAll();
+			outerMiddle.revalidate();
+			outerMiddle.repaint();
 			LibrarySystemCustom.INSTANCE.renderMainPanel();
 
 		});

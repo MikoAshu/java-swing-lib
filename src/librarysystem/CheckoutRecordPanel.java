@@ -80,7 +80,7 @@ public class CheckoutRecordPanel{
                 librarySystem.displayMessage("Member ID should not be empty", AppMsg.ERROR);
             } else {
                 try {
-                    List<String[]> records = sc.getLibMemberCheckoutEntries(memberID);
+                    List<String[]> records = sc.getMemberCheckoutEntries(memberID);
                     if (records.size() == 0)
                     	librarySystem.displayMessage("No Records", AppMsg.INFO);
                     else {
