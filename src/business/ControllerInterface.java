@@ -20,4 +20,5 @@ public interface ControllerInterface {
     public List<String[]> getLibMemCheckoutEntries(String memberId) throws LibrarySystemException;
     public LibraryMember searchLibMember(String memberId);
 	List<String[]> getLibMemberCheckoutEntries(String memberId) throws LibrarySystemException;
+	public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException;
 }
