@@ -17,19 +17,19 @@ import javax.swing.SwingConstants;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LibrarySystemCustom extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
+	private static LibrarySystemCustom frame;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LibrarySystemCustom frame = new LibrarySystemCustom();
+				    frame = new LibrarySystemCustom();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,9 +38,7 @@ public class LibrarySystemCustom extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public LibrarySystemCustom() {
 		setTitle("Library Management System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,9 +48,9 @@ public class LibrarySystemCustom extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
-		gbl_contentPane.rowHeights = new int[] {50, 200};
+		gbl_contentPane.rowHeights = new int[] {50, 310, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 1.0};
+		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel topPanel = new JPanel();
@@ -63,9 +61,10 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_topPanel.gridx = 0;
 		gbc_topPanel.gridy = 0;
 		contentPane.add(topPanel, gbc_topPanel);
+		
 		GridBagLayout gbl_topPanel = new GridBagLayout();
 		gbl_topPanel.columnWidths = new int[] {30};
-		gbl_topPanel.rowHeights = new int[] {30, 30, 30};
+		gbl_topPanel.rowHeights = new int[] {40, 40, 40};
 		gbl_topPanel.columnWeights = new double[]{0.0, 0.0};
 		gbl_topPanel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		topPanel.setLayout(gbl_topPanel);
@@ -81,18 +80,87 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_lblNewLabel.gridy = 1;
 		topPanel.add(lblNewLabel, gbc_lblNewLabel);
 		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 1;
-		contentPane.add(panel_1, gbc_panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0};
-		gbl_panel_1.rowHeights = new int[]{0};
-		gbl_panel_1.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{Double.MIN_VALUE};
-		panel_1.setLayout(gbl_panel_1);
+		JPanel menuPanel = new JPanel();
+		GridBagConstraints gbc_menuPanel = new GridBagConstraints();
+		gbc_menuPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_menuPanel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_menuPanel.gridx = 0;
+		gbc_menuPanel.gridy = 1;
+		contentPane.add(menuPanel, gbc_menuPanel);
+		
+		GridBagLayout gbl_menuPanel = new GridBagLayout();
+		gbl_menuPanel.columnWidths = new int[] {30, 30, 30, 30, 30, 40, 30};
+		gbl_menuPanel.rowHeights = new int[] {40, 40, 30, 30, 30, 0};
+		gbl_menuPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_menuPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		menuPanel.setLayout(gbl_menuPanel);
+		
+		JButton btnAddBook = new JButton("Add Book");
+		btnAddBook.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+		        BookCopyAdd abcp = new BookCopyAdd();
+		        JPanel addBookCopyPanel = abcp.getMainPanel();
+		        contentPane.remove(menuPanel);
+		        addBookCopyPanel.setLayout(gbl_menuPanel);
+		        contentPane.add(addBookCopyPanel, gbc_menuPanel);
+		        frame.invalidate();
+		        frame.validate();
+		        frame.repaint();
+			}
+		});
+		GridBagConstraints gbc_btnAddBook = new GridBagConstraints();
+		gbc_btnAddBook.gridheight = 2;
+		gbc_btnAddBook.fill = GridBagConstraints.BOTH;
+		gbc_btnAddBook.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddBook.gridx = 2;
+		gbc_btnAddBook.gridy = 0;
+		menuPanel.add(btnAddBook, gbc_btnAddBook);
+		
+		JButton btnAddMember = new JButton("Add Member");
+		GridBagConstraints gbc_btnAddMember = new GridBagConstraints();
+		gbc_btnAddMember.gridheight = 2;
+		gbc_btnAddMember.fill = GridBagConstraints.BOTH;
+		gbc_btnAddMember.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddMember.gridx = 3;
+		gbc_btnAddMember.gridy = 0;
+		menuPanel.add(btnAddMember, gbc_btnAddMember);
+		
+		JButton btnAllBooks = new JButton("All Books");
+		GridBagConstraints gbc_btnAllBooks = new GridBagConstraints();
+		gbc_btnAllBooks.gridheight = 2;
+		gbc_btnAllBooks.fill = GridBagConstraints.BOTH;
+		gbc_btnAllBooks.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAllBooks.gridx = 4;
+		gbc_btnAllBooks.gridy = 0;
+		menuPanel.add(btnAllBooks, gbc_btnAllBooks);
+		
+		JButton btnCkoutBook = new JButton("Checkout Book");
+		GridBagConstraints gbc_btnCkoutBook = new GridBagConstraints();
+		gbc_btnCkoutBook.gridheight = 2;
+		gbc_btnCkoutBook.fill = GridBagConstraints.BOTH;
+		gbc_btnCkoutBook.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCkoutBook.gridx = 2;
+		gbc_btnCkoutBook.gridy = 2;
+		menuPanel.add(btnCkoutBook, gbc_btnCkoutBook);
+		
+		JButton btnVwCheckoutRecord = new JButton("View Checkout Record");
+		GridBagConstraints gbc_btnVwCheckoutRecord = new GridBagConstraints();
+		gbc_btnVwCheckoutRecord.gridheight = 2;
+		gbc_btnVwCheckoutRecord.fill = GridBagConstraints.BOTH;
+		gbc_btnVwCheckoutRecord.insets = new Insets(0, 0, 0, 5);
+		gbc_btnVwCheckoutRecord.gridx = 3;
+		gbc_btnVwCheckoutRecord.gridy = 2;
+		menuPanel.add(btnVwCheckoutRecord, gbc_btnVwCheckoutRecord);
+		
+		JButton btnLogout = new JButton("Logout");
+		GridBagConstraints gbc_btnLogout = new GridBagConstraints();
+		gbc_btnLogout.gridheight = 2;
+		gbc_btnLogout.fill = GridBagConstraints.BOTH;
+		gbc_btnLogout.insets = new Insets(0, 0, 0, 5);
+		gbc_btnLogout.gridx = 4;
+		gbc_btnLogout.gridy = 2;
+		menuPanel.add(btnLogout, gbc_btnLogout);
 	}
 
 }

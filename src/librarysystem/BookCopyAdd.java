@@ -8,7 +8,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class BookCopyAdd extends JFrame {
+public class BookCopyAdd {
 	private final ControllerInterface systemController;
 	private final JPanel mainPanel;
 	private JPanel topPanel;
@@ -25,7 +25,6 @@ public class BookCopyAdd extends JFrame {
 		defineOuterMiddle();
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(outerMiddle, BorderLayout.CENTER);
-		getContentPane().add(mainPanel);
 	}
 
 	public JPanel getMainPanel() {
@@ -87,20 +86,20 @@ public class BookCopyAdd extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BookCopyAdd frame = new BookCopyAdd();
-					frame.setVisible(true);
-					frame.setSize(new Dimension(600, 450));
-					Util.centerFrameOnDesktop(frame);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					BookCopyAdd frame = new BookCopyAdd();
+//					frame.setVisible(true);
+//					frame.setSize(new Dimension(600, 450));
+//					Util.centerFrameOnDesktop(frame);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
