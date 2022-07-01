@@ -39,7 +39,6 @@ public class SystemController implements ControllerInterface {
 			throw new LoginException("Password incorrect");
 		}
 		currentAuth = map.get(id).getAuthorization();
-		
 	}
 
 	@Override
@@ -196,6 +195,30 @@ public class SystemController implements ControllerInterface {
         }
         return records;
     }
+    @Override
+    public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException {
+        LibraryMember member = searchMember(memberId);
+        if (member == null) {
+            throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
+        }
+        List<CheckoutRecordEntry> checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
+        List<String[]> records = new ArrayList<>();
+        String pattern = "MM/dd/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        for (CheckoutRecordEntry ch : checkoutBooks) {
+            String[] recs = new String[]{
+                    memberId,
+                    ch.getBookCopy().getBook().getIsbn(),
+                    Integer.toString(ch.getBookCopy().getCopyNum()),
+                    simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+                    simpleDateFormat.format((ch.getDueDate().getTime())),
+            };
+            records.add(recs);
+        }
+        return records;
+    }
 
-	
+	public static Auth getCurrentAuth() {
+		return currentAuth;
+	}
 }

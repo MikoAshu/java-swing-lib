@@ -224,12 +224,10 @@ public class LoginWindowCustom extends JFrame {
                 try {
             		systemControler.login(userSt, passwordSt);
             		
-        			LibrarySystem.INSTANCE.init();
-        			LibrarySystem.INSTANCE.setVisible(true);
+            		LibrarySystemCustom.INSTANCE.setVisible(true);
         			this.setVisible(false);
-        			Util.centerFrameOnDesktop(LibrarySystem.INSTANCE);
+        			Util.centerFrameOnDesktop(LibrarySystemCustom.INSTANCE);
         			
-//                    librarySystem.showWindows(SystemController.currentAuth);
                     librarySystem.displayMessage("Login Successful", AppMsg.SUCCESS);
 
                     librarySystem.repaint();
