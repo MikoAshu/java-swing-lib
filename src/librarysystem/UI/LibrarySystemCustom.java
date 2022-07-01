@@ -35,7 +35,7 @@ import javax.swing.UIManager;
 
 public class LibrarySystemCustom extends JFrame {
 	ControllerInterface ci = SystemController.getInstance();
-	public final static LibrarySystemCustom INSTANCE =new LibrarySystemCustom();
+	public static LibrarySystemCustom INSTANCE = new LibrarySystemCustom();
 	
 	private JPanel contentPane;
 	JPanel menuPanel;
@@ -49,7 +49,6 @@ public class LibrarySystemCustom extends JFrame {
 	JLabel lblMainLabel;
 	
     Auth auth;
-    private boolean isInitialized = false;
     
 	private static LibrarySystemCustom frame;
 	
@@ -57,7 +56,7 @@ public class LibrarySystemCustom extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-				    frame = new LibrarySystemCustom();
+				    frame = INSTANCE;
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -83,6 +82,7 @@ public class LibrarySystemCustom extends JFrame {
 		
 		topPanel = new JPanel();
 		containerPanel = new JPanel();
+		
 		topPanel.setBackground(UIManager.getColor("Desktop.background"));
 		gbc_topPanel = new GridBagConstraints();
 		gbc_topPanel.insets = new Insets(0, 0, 5, 0);
@@ -133,10 +133,9 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel addBookCopyPanel = abcp.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        addBookCopyPanel.setLayout(gbl_menuPanel);
-		        
 		        containerPanel.add(addBookCopyPanel);
-		        lblMainLabel.setText("Add Book Copy");
 		        contentPane.add(containerPanel, gbc_menuPanel);
+		        lblMainLabel.setText("Add Book");
 		        frame.invalidate();
 		        frame.validate();
 		        frame.repaint();
@@ -157,7 +156,6 @@ public class LibrarySystemCustom extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				
 				new AddNewMember();
-				INSTANCE.setVisible(false);
 //				mem.
 ////		        JPanel addBookCopyPanel = abcp.getMainPanel();
 //		        contentPane.remove(menuPanel);
@@ -197,9 +195,7 @@ public class LibrarySystemCustom extends JFrame {
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
 		        
-		        containerPanel.add(jpanel);
 		        lblMainLabel.setText("Checkout Book");
-		        contentPane.add(containerPanel, gbc_menuPanel);
 		        frame.invalidate();
 		        frame.validate();
 		        frame.repaint();
@@ -223,9 +219,7 @@ public class LibrarySystemCustom extends JFrame {
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
 		        
-		        containerPanel.add(jpanel);
 		        lblMainLabel.setText("View Checkout Record");
-		        contentPane.add(containerPanel, gbc_menuPanel);
 		        frame.invalidate();
 		        frame.validate();
 		        frame.repaint();
@@ -239,7 +233,13 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_btnVwCheckoutRecord.gridy = 2;
 		menuPanel.add(btnVwCheckoutRecord, gbc_btnVwCheckoutRecord);
 		
-		JButton btnLogout = new JButton("Logout");
+		JButton btnLogout = new JButton("Exit");
+		btnLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					System.exit(EXIT_ON_CLOSE);
+			}
+		});
 		GridBagConstraints gbc_btnLogout = new GridBagConstraints();
 		gbc_btnLogout.gridheight = 2;
 		gbc_btnLogout.fill = GridBagConstraints.BOTH;
@@ -270,11 +270,8 @@ public class LibrarySystemCustom extends JFrame {
 		if (frame != null) {
 			lblMainLabel.setText("MIU - LMS");
 	        frame.revalidate();
-	        frame.validate();
 	        frame.repaint();
-		} else {
-			
-		}
+		} 
 	}
 
 }

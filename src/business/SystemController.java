@@ -150,7 +150,7 @@ public class SystemController implements ControllerInterface {
 
         for (String[] rec: records) {
             if (memberId.equals(rec[0]) && isbn.equals(rec[1]))
-                throw new LibrarySystemException("Book ISBN " + rec[1] + " has been carried with the Member ID " + rec[0] + " before!");
+                throw new LibrarySystemException("Book ISBN " + rec[1] + " has been checkedout with the Member ID " + rec[0] );
         }
 
         Calendar calCurDate = Calendar.getInstance(); // Using today's date
