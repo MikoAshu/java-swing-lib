@@ -37,7 +37,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     	LibrarySystem.INSTANCE,
 		LoginWindow.INSTANCE,
 		AllMemberIdsWindow.INSTANCE,	
-		AllBookIdsWindow.INSTANCE
+//		AllBookIdsWindow.INSTANCE
 	};
     private LibrarySystem() {}
     	    
@@ -194,7 +194,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
     private void showAllBookIdsPage() {
 		LibrarySystem.hideAllWindows();
-		AllBookIdsWindow.INSTANCE.init();
+//		AllBookIdsWindow.INSTANCE.init();
 		
 		List<String> ids = ci.allBookIds();
 		Collections.sort(ids);
@@ -203,11 +203,11 @@ public class LibrarySystem extends JFrame implements LibWindow {
 			sb.append(s + "\n");
 		}
 		System.out.println(sb.toString());
-		AllBookIdsWindow.INSTANCE.setData(sb.toString());
-		AllBookIdsWindow.INSTANCE.pack();
+//		AllBookIdsWindow.INSTANCE.setData(sb.toString());
+//		AllBookIdsWindow.INSTANCE.pack();
 		//AllBookIdsWindow.INSTANCE.setSize(660,500);
-		Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
-		AllBookIdsWindow.INSTANCE.setVisible(true);
+//		Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
+//		AllBookIdsWindow.INSTANCE.setVisible(true);
     }
     
     private void showAllMembersPage() {
@@ -218,7 +218,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		
 		
 		LibrarySystem.hideAllWindows();
-		AllBookIdsWindow.INSTANCE.init();
+//		AllBookIdsWindow.INSTANCE.init();
 		
 		List<String> ids = ci.allMemberIds();
 		Collections.sort(ids);

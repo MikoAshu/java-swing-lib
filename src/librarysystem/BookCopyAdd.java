@@ -84,13 +84,13 @@ public class BookCopyAdd extends JFrame {
 		middlePanel.add(rightPanel);
 		outerMiddle.add(middlePanel, BorderLayout.NORTH);
 
-		//add button at bottom
+
 		JButton addBookButton = new JButton("Add");
 		addBookButton.setBackground(Color.PINK.darker());
 		addBookButton.setForeground(Color.black);
 		attachButtonListener(addBookButton);
 
-		JButton addBackToMainBtn = new JButton("Back to Main");
+		JButton addBackToMainBtn = new JButton("<-");
 		addBackToMainBtn.setBackground(Color.PINK.darker());
 		addBackToMainBtn.setForeground(Color.black);
 		backToMainListener(addBackToMainBtn);
@@ -109,53 +109,6 @@ public class BookCopyAdd extends JFrame {
 
 	}
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BookCopyAdd frame = new BookCopyAdd();
-					frame.setVisible(true);
-					frame.setSize(new Dimension(600, 450));
-					Util.centerFrameOnDesktop(frame);
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-//	public BookCopyAdd() {
-//		systemController = new SystemController();
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 450, 300);
-//		getContentPane().setLayout(new BorderLayout(0, 0));
-//
-//		JPanel panel = new JPanel();
-//		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-//		flowLayout.setAlignment(FlowLayout.LEFT);
-//		flowLayout.setAlignOnBaseline(true);
-//		getContentPane().add(panel, BorderLayout.NORTH);
-//
-//		JLabel lblNewLabel = new JLabel("Add Book Copy");
-//		panel.add(lblNewLabel);
-//
-//		bookISBN = new JTextField();
-//		getContentPane().add(bookISBN, BorderLayout.CENTER);
-//		bookISBN.setColumns(10);
-//
-//		JButton addBookCopy = new JButton("Add Copy");
-//		getContentPane().add(addBookCopy, BorderLayout.EAST);
-//
-//		attachButtonListener(addBookCopy);
-//
-//	}
 	
 	private void attachButtonListener(JButton a) {
 		a.addActionListener(e -> {
@@ -179,9 +132,9 @@ public class BookCopyAdd extends JFrame {
 	
 	
 	private void backToMainListener(JButton a) {
-		a.addActionListener(e -> {			
+		a.addActionListener(e -> {	
+			mainPanel.removeAll();
 			LibrarySystemCustom.INSTANCE.renderMainPanel();
-
 		});
 	}
 
