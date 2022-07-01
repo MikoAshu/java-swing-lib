@@ -9,8 +9,12 @@ import javax.swing.border.EmptyBorder;
 
 import business.ControllerInterface;
 import business.SystemController;
+import dataaccess.Auth;
 import librarysystem.BookCopyAdd;
+import librarysystem.CheckoutBookPanel;
+import librarysystem.CheckoutRecordPanel;
 import librarysystem.LibrarySystem;
+import panels.AddNewMember;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -43,6 +47,9 @@ public class LibrarySystemCustom extends JFrame {
 	GridBagConstraints gbc_topPanel;
 	JLabel lblMainLabel;
 	
+    Auth auth;
+    private boolean isInitialized = false;
+    
 	private static LibrarySystemCustom frame;
 	
 	public static void main(String[] args) {
@@ -144,6 +151,23 @@ public class LibrarySystemCustom extends JFrame {
 		menuPanel.add(btnAddBook, gbc_btnAddBook);
 		
 		JButton btnAddMember = new JButton("Add Member");
+		btnAddMember.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+//				AddNewMember abcp = new AddNewMember();
+//		        JPanel addBookCopyPanel = abcp.getMainPanel();
+//		        contentPane.remove(menuPanel);
+//		        addBookCopyPanel.setLayout(gbl_menuPanel);
+//		        
+//		        containerPanel.add(addBookCopyPanel);
+//		        lblMainLabel.setText("Add Member");
+//		        contentPane.add(containerPanel, gbc_menuPanel);
+//		        frame.invalidate();
+//		        frame.validate();
+//		        frame.repaint();
+			}
+		});
 		GridBagConstraints gbc_btnAddMember = new GridBagConstraints();
 		gbc_btnAddMember.gridheight = 2;
 		gbc_btnAddMember.fill = GridBagConstraints.BOTH;
@@ -162,6 +186,23 @@ public class LibrarySystemCustom extends JFrame {
 		menuPanel.add(btnAllBooks, gbc_btnAllBooks);
 		
 		JButton btnCkoutBook = new JButton("Checkout Book");
+		btnCkoutBook.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CheckoutBookPanel pan = new CheckoutBookPanel();
+		        JPanel jpanel = pan.getMainPanel();
+		        contentPane.remove(menuPanel);
+		        jpanel.setLayout(gbl_menuPanel);
+		        
+		        containerPanel.add(jpanel);
+		        lblMainLabel.setText("Checkout Book");
+		        contentPane.add(containerPanel, gbc_menuPanel);
+		        frame.invalidate();
+		        frame.validate();
+		        frame.repaint();
+			}
+		});
+		
 		GridBagConstraints gbc_btnCkoutBook = new GridBagConstraints();
 		gbc_btnCkoutBook.gridheight = 2;
 		gbc_btnCkoutBook.fill = GridBagConstraints.BOTH;
@@ -171,6 +212,22 @@ public class LibrarySystemCustom extends JFrame {
 		menuPanel.add(btnCkoutBook, gbc_btnCkoutBook);
 		
 		JButton btnVwCheckoutRecord = new JButton("View Checkout Record");
+		btnVwCheckoutRecord.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CheckoutRecordPanel pan = new CheckoutRecordPanel();
+		        JPanel jpanel = pan.getMainPanel();
+		        contentPane.remove(menuPanel);
+		        jpanel.setLayout(gbl_menuPanel);
+		        
+		        containerPanel.add(jpanel);
+		        lblMainLabel.setText("View Checkout Record");
+		        contentPane.add(containerPanel, gbc_menuPanel);
+		        frame.invalidate();
+		        frame.validate();
+		        frame.repaint();
+			}
+		});
 		GridBagConstraints gbc_btnVwCheckoutRecord = new GridBagConstraints();
 		gbc_btnVwCheckoutRecord.gridheight = 2;
 		gbc_btnVwCheckoutRecord.fill = GridBagConstraints.BOTH;

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutRecord implements Serializable {
-    private final List<CheckoutRecordEntry> checkoutRecordEntries = new ArrayList<>();
+    private final List<CheckoutRecordEntry> checkoutRecordEntries;
 
-    CheckoutRecord() {}
+    CheckoutRecord() {
+    	this.checkoutRecordEntries = new ArrayList<>();
+    }
 
     public void addCheckOutEntry(CheckoutRecordEntry checkoutRecordEntry) {
         checkoutRecordEntries.add(checkoutRecordEntry);
