@@ -33,6 +33,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.UIManager;
 
 public class LibrarySystemCustom extends JFrame {
@@ -211,7 +213,8 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel jpanel = pan.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
-		        
+				containerPanel.add(jpanel);
+				contentPane.add(containerPanel, gbc_menuPanel);
 		        lblMainLabel.setText("Checkout Book");
 		        frame.invalidate();
 		        frame.validate();
@@ -257,17 +260,25 @@ public class LibrarySystemCustom extends JFrame {
 		btnAllBooks.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				AllBookIdsWindow pan = new AllBookIdsWindow();
-//		        JPanel jpanel = pan.getMainPanel();
-//		        contentPane.remove(menuPanel);
-//		        jpanel.setLayout(gbl_menuPanel);
-//		        containerPanel.add(jpanel);
-//		        
-//		        contentPane.add(containerPanel, gbc_menuPanel);
-//		        lblMainLabel.setText("Add Book");
-//		        frame.invalidate();
-//		        frame.validate();
-//		        frame.repaint();
+				AllBookIdsWindow pan = new AllBookIdsWindow();
+		        JPanel jpanel = pan.getMainPanel();
+		        contentPane.remove(menuPanel);
+		        jpanel.setLayout(gbl_menuPanel);
+		        containerPanel.add(jpanel);
+
+				List<String> ids = ci.allBookIds();
+				Collections.sort(ids);
+				StringBuilder sb = new StringBuilder();
+				for(String s: ids) {
+					sb.append(s + "\n");
+				}
+				pan.setData(sb.toString());
+
+		        contentPane.add(containerPanel, gbc_menuPanel);
+		        lblMainLabel.setText("All Books");
+		        frame.invalidate();
+		        frame.validate();
+		        frame.repaint();
 			}
 		});
 		GridBagConstraints gbc_btnExit = new GridBagConstraints();
@@ -299,6 +310,7 @@ public class LibrarySystemCustom extends JFrame {
 		if (role == Auth.LIBRARIAN) {
 			btnAddBookCopy.setEnabled(false);
 			btnAddMember.setEnabled(false);
+			btnAddBook.setEnabled(false);
 		} else if (role == Auth.ADMIN) {
 			btnCkoutBook.setEnabled(false);
 			btnVwCheckoutRecord.setEnabled(false);
