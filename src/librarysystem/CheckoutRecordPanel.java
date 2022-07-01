@@ -43,10 +43,10 @@ public class CheckoutRecordPanel{
 
     private void defineTopPanel() {
         topPanel = new JPanel();
-        JLabel label = new JLabel("View Member Checkout Record");
-        Util.adjustLabelFont(label, Util.DARK_BLUE, true);
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(label);
+//        JLabel label = new JLabel("View Member Checkout Record");
+//        Util.adjustLabelFont(label, Util.DARK_BLUE, true);
+//        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+//        topPanel.add(label);
     }
 
     private void defineMiddlePanel() {
