@@ -1,4 +1,4 @@
-package librarysystem;
+package librarysystem.UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,6 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import business.ControllerInterface;
+import business.SystemController;
+import librarysystem.BookCopyAdd;
+import librarysystem.LibrarySystem;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -20,11 +26,25 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.UIManager;
 
 public class LibrarySystemCustom extends JFrame {
-
+	ControllerInterface ci = SystemController.getInstance();
+	public final static LibrarySystemCustom INSTANCE =new LibrarySystemCustom();
+	
 	private JPanel contentPane;
+	JPanel menuPanel;
+	JPanel topPanel;
+	JPanel containerPanel;
+	
+	GridBagLayout gbl_menuPanel;
+	GridBagConstraints gbc_menuPanel;
+	GridBagLayout gbl_topPanel;
+	GridBagConstraints gbc_topPanel;
+	JLabel lblMainLabel;
+	
 	private static LibrarySystemCustom frame;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -53,42 +73,43 @@ public class LibrarySystemCustom extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JPanel topPanel = new JPanel();
-		topPanel.setBackground(SystemColor.textHighlight);
-		GridBagConstraints gbc_topPanel = new GridBagConstraints();
+		topPanel = new JPanel();
+		containerPanel = new JPanel();
+		topPanel.setBackground(UIManager.getColor("Desktop.background"));
+		gbc_topPanel = new GridBagConstraints();
 		gbc_topPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_topPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_topPanel.gridx = 0;
 		gbc_topPanel.gridy = 0;
-		contentPane.add(topPanel, gbc_topPanel);
 		
-		GridBagLayout gbl_topPanel = new GridBagLayout();
+		
+		gbl_topPanel = new GridBagLayout();
 		gbl_topPanel.columnWidths = new int[] {30};
 		gbl_topPanel.rowHeights = new int[] {40, 40, 40};
 		gbl_topPanel.columnWeights = new double[]{0.0, 0.0};
 		gbl_topPanel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		topPanel.setLayout(gbl_topPanel);
 		
-		JLabel lblNewLabel = new JLabel("MIU - LMS");
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
-		lblNewLabel.setForeground(SystemColor.activeCaption);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainLabel = new JLabel("MIU - LMS");
+		lblMainLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+		lblMainLabel.setForeground(SystemColor.activeCaption);
+		lblMainLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
 		gbc_lblNewLabel.gridx = 1;
 		gbc_lblNewLabel.gridy = 1;
-		topPanel.add(lblNewLabel, gbc_lblNewLabel);
+		topPanel.add(lblMainLabel, gbc_lblNewLabel);
 		
-		JPanel menuPanel = new JPanel();
-		GridBagConstraints gbc_menuPanel = new GridBagConstraints();
+		menuPanel = new JPanel();
+		gbc_menuPanel = new GridBagConstraints();
 		gbc_menuPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_menuPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_menuPanel.gridx = 0;
 		gbc_menuPanel.gridy = 1;
-		contentPane.add(menuPanel, gbc_menuPanel);
 		
-		GridBagLayout gbl_menuPanel = new GridBagLayout();
+		
+		gbl_menuPanel = new GridBagLayout();
 		gbl_menuPanel.columnWidths = new int[] {30, 30, 30, 30, 30, 40, 30};
 		gbl_menuPanel.rowHeights = new int[] {40, 40, 30, 30, 30, 0};
 		gbl_menuPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
@@ -99,16 +120,21 @@ public class LibrarySystemCustom extends JFrame {
 		btnAddBook.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 		        BookCopyAdd abcp = new BookCopyAdd();
 		        JPanel addBookCopyPanel = abcp.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        addBookCopyPanel.setLayout(gbl_menuPanel);
-		        contentPane.add(addBookCopyPanel, gbc_menuPanel);
+		        
+		        containerPanel.add(addBookCopyPanel);
+		        lblMainLabel.setText("Add Book Copy");
+		        contentPane.add(containerPanel, gbc_menuPanel);
 		        frame.invalidate();
 		        frame.validate();
 		        frame.repaint();
 			}
 		});
+		
 		GridBagConstraints gbc_btnAddBook = new GridBagConstraints();
 		gbc_btnAddBook.gridheight = 2;
 		gbc_btnAddBook.fill = GridBagConstraints.BOTH;
@@ -161,6 +187,23 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_btnLogout.gridx = 4;
 		gbc_btnLogout.gridy = 2;
 		menuPanel.add(btnLogout, gbc_btnLogout);
+		
+		renderMainPanel();
+	}
+	
+	public void renderMainPanel() {
+		if (frame != null) contentPane.remove(containerPanel);
+		
+		contentPane.add(menuPanel, gbc_menuPanel);
+		
+		if (frame != null) {
+			lblMainLabel.setText("MIU - LMS");
+	        frame.invalidate();
+	        frame.validate();
+	        frame.repaint();
+		} else {
+			contentPane.add(topPanel, gbc_topPanel);
+		}
 	}
 
 }

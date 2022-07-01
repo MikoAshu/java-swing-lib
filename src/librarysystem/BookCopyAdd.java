@@ -3,6 +3,7 @@ package librarysystem;
 import business.Book;
 import business.ControllerInterface;
 import business.SystemController;
+import librarysystem.UI.LibrarySystemCustom;
 
 import java.awt.*;
 
@@ -10,7 +11,10 @@ import javax.swing.*;
 
 public class BookCopyAdd {
 	private final ControllerInterface systemController;
-	private final JPanel mainPanel;
+    LibrarySystem librarySystem = LibrarySystem.INSTANCE;
+    LibrarySystemCustom librarySystemCustom = LibrarySystemCustom.INSTANCE;
+
+    private final JPanel mainPanel;
 	private JPanel topPanel;
 	private JPanel outerMiddle;
 
@@ -37,10 +41,10 @@ public class BookCopyAdd {
 
 	public void defineTopPanel() {
 		topPanel = new JPanel();
-		JLabel AddBookLabel = new JLabel("Add Book Copy");
-		Util.adjustLabelFont(AddBookLabel, Util.DARK_BLUE, true);
+//		JLabel AddBookLabel = new JLabel("Add Book Copy");
+//		Util.adjustLabelFont(AddBookLabel, Util.DARK_BLUE, true);
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		topPanel.add(AddBookLabel);
+//		topPanel.add(AddBookLabel);
 	}
 
 	public void defineOuterMiddle() {
@@ -72,14 +76,27 @@ public class BookCopyAdd {
 		outerMiddle.add(middlePanel, BorderLayout.NORTH);
 
 		//add button at bottom
-		JButton addBookButton = new JButton("Add Book Copy");
+		JButton addBookButton = new JButton("Add");
 		addBookButton.setBackground(Color.PINK.darker());
 		addBookButton.setForeground(Color.black);
 		attachButtonListener(addBookButton);
+		
+		JButton addBackToMainBtn = new JButton("Back to Main");
+		addBackToMainBtn.setBackground(Color.PINK.darker());
+		addBackToMainBtn.setForeground(Color.black);
+		backToMainListener(addBackToMainBtn);
+		
 		JPanel addBookButtonPanel = new JPanel();
 		addBookButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		addBookButtonPanel.add(addBookButton);
+		
+		JPanel addBackButtonPanel = new JPanel();
+		addBackButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		addBackButtonPanel.add(addBackToMainBtn);
+		
 		outerMiddle.add(addBookButtonPanel, BorderLayout.CENTER);
+		outerMiddle.add(addBackButtonPanel, BorderLayout.PAGE_END);
+
 
 	}
 
@@ -134,20 +151,27 @@ public class BookCopyAdd {
 		a.addActionListener(e -> {
 			String isbn = isbnText.getText();
 			if (isbn == null || isbn.equals("")) {
-				System.out.println("Please enter an ISBN number");
+				librarySystem.displayMessage("Please enter an ISBN number", AppMsg.ERROR);
 			} else {
 				Book b = systemController.getBook(isbn);
 				if(b != null) {
 					b.addCopy();
 					systemController.updateBook(b);
-					System.out.println("The book has been updated");
+					librarySystem.displayMessage("The book has been updated", AppMsg.SUCCESS);
 				} else {
-					System.out.println("Book doesn't exist");
+					librarySystem.displayMessage("Book doesn't exist", AppMsg.INFO);
 				}
 			}
 		});
 	}
 	
 	
+	private void backToMainListener(JButton a) {
+		a.addActionListener(e -> {
+			LibrarySystemCustom.INSTANCE.renderMainPanel();
+			LibrarySystemCustom.INSTANCE.renderMainPanel();
+
+		});
+	}
 
 }

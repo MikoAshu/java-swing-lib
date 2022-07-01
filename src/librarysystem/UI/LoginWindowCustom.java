@@ -1,4 +1,4 @@
-package librarysystem;
+package librarysystem.UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -30,6 +30,9 @@ import com.jgoodies.forms.layout.RowSpec;
 import business.ControllerInterface;
 import business.LoginException;
 import business.SystemController;
+import librarysystem.AppMsg;
+import librarysystem.LibrarySystem;
+import librarysystem.Util;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
