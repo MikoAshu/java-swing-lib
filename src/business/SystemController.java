@@ -1,6 +1,9 @@
 package business;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,6 +101,96 @@ public class SystemController implements ControllerInterface {
 		da.updateBook(book);
 
 	}
+	
+    @Override
+    public LibraryMember searchLibMember(String memberId) {
+        DataAccess da = new DataAccessFacade();
+        return da.searchMember(memberId);
+    }
+    
+
+    @Override
+    public List<String[]> getLibMemCheckoutEntries(String memberId) throws LibrarySystemException {
+        LibraryMember member = searchLibMember(memberId);
+        if (member == null) {
+            throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
+        }
+        List<CheckoutRecordEntry> checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
+        List<String[]> records = new ArrayList<>();
+        String pattern = "MM/dd/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        for (CheckoutRecordEntry ch : checkoutBooks) {
+            String[] recs = new String[]{
+                    memberId,
+                    ch.getBookCopy().getBook().getIsbn(),
+                    Integer.toString(ch.getBookCopy().getCopyNum()),
+                    simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+                    simpleDateFormat.format((ch.getDueDate().getTime())),
+            };
+            records.add(recs);
+        }
+        return records;
+    }
+    
+    @Override
+    public void checkoutBook(String memberId, String isbn) throws LibrarySystemException {
+        DataAccess da = new DataAccessFacade();
+        Book book = da.searchBook(isbn);
+        List<String[]> records = getLibMemberCheckoutEntries(memberId);
+
+        if (book == null) {
+            throw new LibrarySystemException("Book with ISBN '" + isbn + "' not found.");
+        }
+        LibraryMember member = searchLibMember(memberId);
+        if (member == null) {
+            throw new LibrarySystemException("Library member with ID '" + memberId + "' not found.");
+        }
+        if (!book.isAvailable()) {
+            throw new LibrarySystemException("There are no available copies for book with ID '" + isbn + "' to checkout.");
+        }
+
+        for (String[] rec: records) {
+            if (memberId.equals(rec[0]) && isbn.equals(rec[1]))
+                throw new LibrarySystemException("Book ISBN " + rec[1] + " has been carried with the Member ID " + rec[0] + " before!");
+        }
+
+        Calendar calCurDate = Calendar.getInstance(); // Using today's date
+        calCurDate.setTime(new Date());
+        Calendar dueCalDate = Calendar.getInstance();
+        dueCalDate.setTime(new Date()); // Using today's date
+        dueCalDate.add(Calendar.DATE, book.getMaxCheckoutLength());
+        CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(
+                calCurDate, dueCalDate,
+                book.getNextAvailableCopy()
+        );
+        member.getCheckoutRecord().addCheckOutEntry(checkoutRecordEntry);
+        da.updateMember(member);
+        updateBook(book);
+    }
+
+
+	@Override
+    public List<String[]> getLibMemberCheckoutEntries(String memberId) throws LibrarySystemException {
+        LibraryMember member = searchLibMember(memberId);
+        if (member == null) {
+            throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
+        }
+        List<CheckoutRecordEntry> checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
+        List<String[]> records = new ArrayList<>();
+        String pattern = "MM/dd/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        for (CheckoutRecordEntry ch : checkoutBooks) {
+            String[] recs = new String[]{
+                    memberId,
+                    ch.getBookCopy().getBook().getIsbn(),
+                    Integer.toString(ch.getBookCopy().getCopyNum()),
+                    simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+                    simpleDateFormat.format((ch.getDueDate().getTime())),
+            };
+            records.add(recs);
+        }
+        return records;
+    }
 
 	
 }

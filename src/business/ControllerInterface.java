@@ -16,4 +16,8 @@ public interface ControllerInterface {
 	Book getBook(String isbn);
 	List<Book> readAllBooks();
 	void updateBook(Book book);
+    public void checkoutBook(String memberId, String isbn) throws LibrarySystemException;
+    public List<String[]> getLibMemCheckoutEntries(String memberId) throws LibrarySystemException;
+    public LibraryMember searchLibMember(String memberId);
+	List<String[]> getLibMemberCheckoutEntries(String memberId) throws LibrarySystemException;
 }
