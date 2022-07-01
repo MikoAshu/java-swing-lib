@@ -16,8 +16,12 @@ public interface ControllerInterface {
 	Book getBook(String isbn);
 	List<Book> readAllBooks();
 	void updateBook(Book book);
-
-    Author[] getAuthors();
+    public void checkoutBook(String memberId, String isbn) throws LibrarySystemException;
+    public List<String[]> getLibMemCheckoutEntries(String memberId) throws LibrarySystemException;
+    public LibraryMember searchLibMember(String memberId);
+	List<String[]> getLibMemberCheckoutEntries(String memberId) throws LibrarySystemException;
+	public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException;
+	Author[] getAuthors();
 	void addNewBook(String isbn, String title, int maxCheckoutLength, List<Author> authors) throws LibrarySystemException;
 	Author createNewAuthor(String firstName, String lastName, String phone, String bio, Address address) throws LibrarySystemException;
 

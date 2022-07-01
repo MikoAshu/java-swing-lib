@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import business.ControllerInterface;
@@ -38,7 +39,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		AllMemberIdsWindow.INSTANCE,	
 		AllBookIdsWindow.INSTANCE
 	};
-    	
+    private LibrarySystem() {}
+    	    
 	public static void hideAllWindows() {
 		
 		for(LibWindow frame: allWindows) {
@@ -66,7 +68,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
    
     
-    private LibrarySystem() {}
+
     
     public void init() {
     	formatContentPane();
@@ -79,6 +81,20 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		isInitialized = true;
     }
     
+	public void displayMessage(String msg, AppMsg appMsg) {
+		if(appMsg == AppMsg.ERROR) {
+			  JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.INFO) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.WARNING) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.SUCCESS) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		}
+		
+
+	}
+	
     private void formatContentPane() {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1,1));
@@ -117,6 +133,17 @@ public class LibrarySystem extends JFrame implements LibWindow {
     }
     
     private void setMenuItems() {
+        options = new JMenu("Options");  
+  	   menuBar.add(options);
+  	   login = new JMenuItem("Logout");
+  	   login.addActionListener(new LoginListener());
+  	   allBookIds = new JMenuItem("All Book Ids");
+  	   allBookIds.addActionListener(new AllBookIdsListener());
+  	   allMemberIds = new JMenuItem("All Member Ids");
+  	   allMemberIds.addActionListener(new AllMemberIdsListener());
+  	   options.add(login);
+  	   options.add(allBookIds);
+  	   options.add(allMemberIds);
         if (auth == null) {
         	return;
         } else if (auth == Auth.BOTH) {
@@ -131,8 +158,6 @@ public class LibrarySystem extends JFrame implements LibWindow {
         else {
         	
         };
-        options.remove(login);
-        options.add(login);
     }
     
     class LoginListener implements ActionListener {

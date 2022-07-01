@@ -193,19 +193,18 @@ public class LoginWindow extends JFrame implements LibWindow {
                 String passwordSt = password.getText().trim();
                 
                 if (passwordSt.length() == 0) {
-                	JOptionPane.showMessageDialog(this, "Username is required!");
+                	librarySystem.displayMessage("Username is required!", AppMsg.ERROR);
                 }
                 else if (userSt.length() == 0) {
-                	JOptionPane.showMessageDialog(this, "Password is required!");
+                	librarySystem.displayMessage("Password is required!", AppMsg.ERROR);
                 } else {
                     try {
                 		systemControler.login(userSt, passwordSt);
                         librarySystem.showWindows(SystemController.currentAuth);
-////                        displayInfo("Login successful");
-                		JOptionPane.showMessageDialog(this,"Successful Login");
+                        librarySystem.displayMessage("Successful Login", AppMsg.SUCCESS);
                         librarySystem.repaint();
                     } catch (LoginException ex) {
-                    	JOptionPane.showMessageDialog(this,"Error while logging in : " + ex.getMessage());
+                    	librarySystem.displayMessage(ex.getMessage(), AppMsg.ERROR);
                     }
                 }
     				

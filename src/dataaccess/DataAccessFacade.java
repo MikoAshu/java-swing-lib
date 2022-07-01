@@ -34,6 +34,15 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.MEMBERS, mems);	
 	}
 
+    @Override
+    public Book searchBook(String isbn) {
+        HashMap<String, Book> books = readBooksMap();
+        if (books.containsKey(isbn)) {
+            return books.get(isbn);
+        }
+        return null;
+    }
+    
 	@Override
 	public Book getBookByISBN(String isbn) {
 		HashMap<String, Book> bookHashMap = readBooksMap();
@@ -162,24 +171,20 @@ public class DataAccessFacade implements DataAccess {
 		private static final long serialVersionUID = 5399827794066637059L;
 	}
 
-
-
 	@Override
+	public void updateMember(LibraryMember member) {
+	        HashMap<String, LibraryMember> members = readMemberMap();
+	        members.put(member.getMemberId(), member);
+	        saveToStorage(StorageType.MEMBERS, members);
+	}
+	
 	public void saveMember(LibraryMember member) {
         HashMap<String, LibraryMember> members = readMemberMap();
         String memberId = member.getMemberId();
         members.put(memberId, member);
         saveToStorage(StorageType.MEMBERS, members);
     }
-
-	@Override
-	public Book searchBook(String isbn) {
-        HashMap<String, Book> books = readBooksMap();
-        if (books.containsKey(isbn)) {
-            return books.get(isbn);
-        }
-        return null;
-    }
+	
 	@Override
     public LibraryMember searchMember(String memberId) {
         HashMap<String, LibraryMember> members = readMemberMap();
@@ -188,5 +193,4 @@ public class DataAccessFacade implements DataAccess {
         }
         return null;
     }
-	
 }
