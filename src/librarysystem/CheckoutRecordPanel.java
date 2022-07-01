@@ -3,6 +3,7 @@ package librarysystem;
 import business.ControllerInterface;
 import business.LibrarySystemException;
 import business.SystemController;
+import librarysystem.UI.LibrarySystemCustom;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +19,7 @@ public class CheckoutRecordPanel{
     private JPanel lowerPanel;
     private JPanel middlePanel;
     private boolean tableDataSet;
-    private final JPanel mainPanel;
+    private JPanel mainPanel;
 
     private JTextField memberIdField;
 
@@ -43,10 +44,11 @@ public class CheckoutRecordPanel{
 
     private void defineTopPanel() {
         topPanel = new JPanel();
-//        JLabel label = new JLabel("View Member Checkout Record");
-//        Util.adjustLabelFont(label, Util.DARK_BLUE, true);
-//        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        topPanel.add(label);
+        JButton backBtn = new JButton("<-");
+        backBtn.setBackground(Color.PINK.darker());
+        backBtn.setForeground(Color.black);
+        backButtonListener(backBtn);
+        topPanel.add(backBtn);
     }
 
     private void defineMiddlePanel() {
@@ -68,10 +70,18 @@ public class CheckoutRecordPanel{
 
     private void defineLowerPanel() {
         lowerPanel = new JPanel();
-        FlowLayout fl = new FlowLayout(FlowLayout.CENTER, 25, 25);
+        FlowLayout fl = new FlowLayout(FlowLayout.RIGHT, 25, 25);
         lowerPanel.setLayout(fl);
+
     }
 
+    private void backButtonListener(JButton backBtn) {
+    	backBtn.addActionListener(e -> {	
+    		mainPanel.removeAll();
+    		LibrarySystemCustom.INSTANCE.renderMainPanel();
+    	});
+    }
+    
     private void searchButtonListener(JButton searchBtn) {
         searchBtn.addActionListener(e -> {
             JScrollPane scrollPane;
@@ -109,9 +119,10 @@ public class CheckoutRecordPanel{
                             table.setPreferredScrollableViewportSize(table.getPreferredSize());
                             table.setFillsViewportHeight(true);
                             scrollPane = new JScrollPane(table);
-
+                            
                             lowerPanel.add(scrollPane);
                             tableDataSet = true;
+                            mainPanel.repaint();
                         } else {
                             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                             tableModel.setRowCount(0);

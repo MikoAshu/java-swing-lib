@@ -38,34 +38,15 @@ public class AddNewMember {
 	private JTextField cell;
 	JButton status = new JButton("");
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddNewMember window = new AddNewMember();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
 	public AddNewMember() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Add Member");
+		frame.setVisible(true);
 		frame.getContentPane().setForeground(new Color(0, 0, 255));
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.getContentPane().setLayout(null);
@@ -205,12 +186,11 @@ public class AddNewMember {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-//		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/member.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(AddNewMember.class.getResource("/images/member.png")));
 		lblNewLabel_1.setBounds(95, 174, 300, 300);
 		panel.add(lblNewLabel_1);
 		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1094, 660);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	
 	}

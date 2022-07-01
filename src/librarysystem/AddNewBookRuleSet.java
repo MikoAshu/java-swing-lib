@@ -9,8 +9,8 @@ public class AddNewBookRuleSet implements RuleSet{
     AddNewBook frame;
     @Override
     public void applyRules(Component component) throws LibrarySystemException {
-        if (!(component instanceof JFrame))
-            throw new LibrarySystemException("Internal Error retry soon");
+//        if (!(component instanceof JFrame))
+//            throw new LibrarySystemException("Internal Error retry soon");
         frame = (AddNewBook) component;
         noEmptyField();
         maxAllowedDateNumeric();
