@@ -88,12 +88,12 @@ public class DataAccessFacade implements DataAccess {
 	
 		
 	static void loadBookMap(List<Book> bookList) {
-		HashMap<String, Book> books = new HashMap<String, Book>();
+		HashMap<String, Book> books = new HashMap<>();
 		bookList.forEach(book -> books.put(book.getIsbn(), book));
 		saveToStorage(StorageType.BOOKS, books);
 	}
 	static void loadUserMap(List<User> userList) {
-		HashMap<String, User> users = new HashMap<String, User>();
+		HashMap<String, User> users = new HashMap<>();
 		userList.forEach(user -> users.put(user.getId(), user));
 		saveToStorage(StorageType.USERS, users);
 	}

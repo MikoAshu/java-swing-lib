@@ -1,11 +1,7 @@
 package business;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import dataaccess.Auth;
 import dataaccess.DataAccess;
@@ -39,6 +35,7 @@ public class SystemController implements ControllerInterface {
 			throw new LoginException("Password incorrect");
 		}
 		currentAuth = map.get(id).getAuthorization();
+		
 	}
 
 	@Override
@@ -100,13 +97,13 @@ public class SystemController implements ControllerInterface {
 		da.updateBook(book);
 
 	}
-	
+
     @Override
     public LibraryMember searchLibMember(String memberId) {
         DataAccess da = new DataAccessFacade();
         return da.searchMember(memberId);
     }
-    
+
 
     @Override
     public List<String[]> getLibMemCheckoutEntries(String memberId) throws LibrarySystemException {
@@ -130,7 +127,7 @@ public class SystemController implements ControllerInterface {
         }
         return records;
     }
-    
+
     @Override
     public void checkoutBook(String memberId, String isbn) throws LibrarySystemException {
         DataAccess da = new DataAccessFacade();
@@ -175,11 +172,11 @@ public class SystemController implements ControllerInterface {
             throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
         }
         List<CheckoutRecordEntry> checkoutBooks = new ArrayList<>();
-        
+
         if(member.getCheckoutRecord() != null) {
         	 checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
         }
-       
+
         List<String[]> records = new ArrayList<>();
         String pattern = "MM/dd/yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -195,7 +192,7 @@ public class SystemController implements ControllerInterface {
         }
         return records;
     }
-    
+
     @Override
     public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException {
         LibraryMember member = searchMember(memberId);
@@ -222,4 +219,52 @@ public class SystemController implements ControllerInterface {
 	public static Auth getCurrentAuth() {
 		return currentAuth;
 	}
+
+	@Override
+	public Author[] getAuthors() {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Book> bookHashMap = da.readBooksMap();
+		Set<Author> authors = new TreeSet<>();
+		bookHashMap.forEach((k,v) -> {
+			for (int i = 0; i < v.getAuthors().size(); i++) {
+				authors.add(v.getAuthors().get(i));
+			}
+		});
+		Author[] a = new Author[authors.size()];
+		authors.toArray(a);
+		return a;
+	}
+
+	@Override
+	public void addNewBook(String isbn, String title, int maxCheckoutLength, List<Author> authors) throws LibrarySystemException {
+		if (isbn == null || title == null || authors == null)
+			throw new LibrarySystemException("Empty fields is not allowed");
+		Book b = new Book(isbn, title, maxCheckoutLength, authors);
+		b.addCopy();
+		DataAccess da = new DataAccessFacade();
+		da.updateBook(b);
+	}
+
+	@Override
+	public Author createNewAuthor(String firstName, String lastName, String phone, String bio, Address address) throws LibrarySystemException{
+		if (firstName == null || firstName.equals("") ||
+				lastName == null || lastName.equals("") ||
+				phone == null || phone.equals("") ||
+				bio == null || bio.equals("") ||
+				address == null)
+			throw new LibrarySystemException("Invalid argument for Author");
+		return new Author(firstName, lastName, phone, address, bio);
+	}
+
+	@Override
+	public Address createNewAddress(String street, String city, String state, String zip) throws LibrarySystemException {
+		if (street == null || street.equals("") ||
+				city == null || city.equals("") ||
+				state == null || state.equals("") ||
+				zip == null || zip.equals(""))
+			throw new LibrarySystemException("No Empty fields allowed");
+		return new Address(street, city, state, zip);
+	}
+
+
 }

@@ -3,7 +3,7 @@ package business;
 import java.io.Serializable;
 
 /* Immutable */
-final public class Address implements Serializable {
+final public class Address implements Serializable, Comparable<Address> {
 	
 	private static final long serialVersionUID = -891229800414574888L;
 	private String street;
@@ -33,5 +33,17 @@ final public class Address implements Serializable {
 	public String toString() {
 		return "(" + street + ", " + city + ", " + zip + ")";
 		
+	}
+
+	@Override
+	public int compareTo(Address o) {
+		if (street.compareTo(o.street) != 0)
+			return street.compareTo(o.street);
+		else if (city.compareTo(o.city) != 0)
+			return city.compareTo(o.city);
+		else if (state.compareTo(o.state) != 0)
+			return state.compareTo(o.state);
+		else
+			return zip.compareTo(o.zip);
 	}
 }
