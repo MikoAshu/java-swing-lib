@@ -245,9 +245,19 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_btnLogout.gridy = 2;
 		menuPanel.add(btnLogout, gbc_btnLogout);
 		
+		var role = SystemController.getCurrentAuth();
+		
+		if (role == Auth.LIBRARIAN) {
+			btnAddBook.setEnabled(false);
+			btnAddMember.setEnabled(false);
+		} else if (role == Auth.ADMIN) {
+			btnCkoutBook.setEnabled(false);
+			btnVwCheckoutRecord.setEnabled(false);
+		} 
+		
 		renderMainPanel();
 	}
-	
+
 	public void renderMainPanel() {
 		if (frame != null) contentPane.remove(containerPanel);
 		

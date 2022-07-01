@@ -39,7 +39,6 @@ public class SystemController implements ControllerInterface {
 			throw new LoginException("Password incorrect");
 		}
 		currentAuth = map.get(id).getAuthorization();
-		
 	}
 
 	@Override
@@ -214,5 +213,7 @@ public class SystemController implements ControllerInterface {
         return records;
     }
 
-	
+	public static Auth getCurrentAuth() {
+		return currentAuth;
+	}
 }
