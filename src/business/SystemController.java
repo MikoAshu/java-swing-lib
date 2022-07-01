@@ -1,15 +1,11 @@
 package business;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import dataaccess.Auth;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
-
-import javax.xml.crypto.Data;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
@@ -99,5 +95,32 @@ public class SystemController implements ControllerInterface {
 
 	}
 
-	
+	@Override
+	public Author[] getAuthors() {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, Book> bookHashMap = da.readBooksMap();
+		Set<Author> authors = new TreeSet<>();
+		bookHashMap.forEach((k,v) -> {
+			for (int i = 0; i < v.getAuthors().size(); i++) {
+				authors.add(v.getAuthors().get(i));
+			}
+		});
+		Author[] a = new Author[authors.size()];
+		authors.toArray(a);
+		return a;
+	}
+
+	@Override
+	public void addNewBook(String isbn, String title, int maxCheckoutLength, Author author) throws LibrarySystemException {
+		if (isbn == null || title == null || author == null)
+			throw new LibrarySystemException("Empty fields is not allowed");
+		List<Author> authors = new ArrayList<>();
+		authors.add(author);
+		Book b = new Book(isbn, title, maxCheckoutLength, authors);
+		b.addCopy();
+		DataAccess da = new DataAccessFacade();
+		da.updateBook(b);
+	}
+
+
 }

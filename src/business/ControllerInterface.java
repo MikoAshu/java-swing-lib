@@ -16,4 +16,7 @@ public interface ControllerInterface {
 	Book getBook(String isbn);
 	List<Book> readAllBooks();
 	void updateBook(Book book);
+
+    Author[] getAuthors();
+	void addNewBook(String isbn, String title, int maxCheckoutLength, Author author) throws LibrarySystemException;
 }
