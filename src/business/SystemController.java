@@ -1,6 +1,9 @@
 package business;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import dataaccess.Auth;
@@ -205,11 +208,15 @@ public class SystemController implements ControllerInterface {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         for (CheckoutRecordEntry ch : checkoutBooks) {
             String[] recs = new String[]{
-                    memberId,
-                    ch.getBookCopy().getBook().getIsbn(),
-                    Integer.toString(ch.getBookCopy().getCopyNum()),
+                    member.getFirstName() + " " + member.getLastName(),
+                    ch.getBookCopy().getBook().getTitle(),
+					ch.getBookCopy().getBook().getIsbn(),
+					Integer.toString(ch.getBookCopy().getCopyNum()),
                     simpleDateFormat.format((ch.getCheckoutDate().getTime())),
                     simpleDateFormat.format((ch.getDueDate().getTime())),
+							calculateOverdue(simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+							simpleDateFormat.format((ch.getDueDate().getTime())),
+							ch.getBookCopy().getBook().getMaxCheckoutLength()) + " days",
             };
             records.add(recs);
         }
@@ -264,6 +271,18 @@ public class SystemController implements ControllerInterface {
 				zip == null || zip.equals(""))
 			throw new LibrarySystemException("No Empty fields allowed");
 		return new Address(street, city, state, zip);
+	}
+
+	@Override
+	public int calculateOverdue(String startDate, String endDate, int timeAllowed) {
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		LocalDate start = LocalDate.parse(startDate, df);
+		LocalDate end = LocalDate.parse(endDate, df);
+		long daysBetween = ChronoUnit.DAYS.between(start, end);
+		System.out.println(daysBetween);
+		if (daysBetween < timeAllowed)
+			return 0;
+		return (int)daysBetween - timeAllowed;
 	}
 
 

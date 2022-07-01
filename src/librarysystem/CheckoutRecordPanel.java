@@ -86,11 +86,14 @@ public class CheckoutRecordPanel{
                     else {
                         if (!tableDataSet) {
                             DefaultTableModel tableModel = new DefaultTableModel();
-                            tableModel.addColumn("Member Id");
+                            tableModel.addColumn("Member Name");
                             tableModel.addColumn("Book");
+                            tableModel.addColumn("ISBN");
                             tableModel.addColumn("Copy Number");
                             tableModel.addColumn("Checkout Date");
                             tableModel.addColumn("Due Date");
+                            tableModel.addColumn("Overdue");
+
 
 
 
@@ -98,13 +101,14 @@ public class CheckoutRecordPanel{
 
                             for (String[] rec : records) {
                                 tableModel.addRow(rec);
+                                System.out.println(rec[4]);
                             }
-                            tableModel.addRow(new String[]{});
-                            tableModel.addRow(new String[]{});
-                            tableModel.addRow(new String[]{});
-                            tableModel.addRow(new String[]{});
-                            tableModel.addRow(new String[]{});
-                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
 
                             table.setPreferredScrollableViewportSize(table.getPreferredSize());
                             table.setFillsViewportHeight(true);
