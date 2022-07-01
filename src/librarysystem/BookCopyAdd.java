@@ -2,6 +2,7 @@ package librarysystem;
 
 import business.Book;
 import business.ControllerInterface;
+import business.LibrarySystemException;
 import business.SystemController;
 import librarysystem.UI.LibrarySystemCustom;
 
@@ -9,7 +10,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class BookCopyAdd {
+public class BookCopyAdd extends JFrame {
+	RuleSet ruleSet;
 	private final ControllerInterface systemController;
     LibrarySystem librarySystem = LibrarySystem.INSTANCE;
     LibrarySystemCustom librarySystemCustom = LibrarySystemCustom.INSTANCE;
@@ -29,6 +31,13 @@ public class BookCopyAdd {
 		defineOuterMiddle();
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 		mainPanel.add(outerMiddle, BorderLayout.CENTER);
+		getContentPane().add(mainPanel);
+
+		ruleSet = new BookCopyAddRuleSet();
+	}
+
+	public String getIsbnValue() {
+		return isbnText.getText();
 	}
 
 	public JPanel getMainPanel() {
@@ -80,20 +89,20 @@ public class BookCopyAdd {
 		addBookButton.setBackground(Color.PINK.darker());
 		addBookButton.setForeground(Color.black);
 		attachButtonListener(addBookButton);
-		
+
 		JButton addBackToMainBtn = new JButton("Back to Main");
 		addBackToMainBtn.setBackground(Color.PINK.darker());
 		addBackToMainBtn.setForeground(Color.black);
 		backToMainListener(addBackToMainBtn);
-		
+
 		JPanel addBookButtonPanel = new JPanel();
 		addBookButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		addBookButtonPanel.add(addBookButton);
-		
+
 		JPanel addBackButtonPanel = new JPanel();
 		addBackButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		addBackButtonPanel.add(addBackToMainBtn);
-		
+
 		outerMiddle.add(addBookButtonPanel, BorderLayout.CENTER);
 		outerMiddle.add(addBackButtonPanel, BorderLayout.PAGE_END);
 
@@ -103,20 +112,21 @@ public class BookCopyAdd {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					BookCopyAdd frame = new BookCopyAdd();
-//					frame.setVisible(true);
-//					frame.setSize(new Dimension(600, 450));
-//					Util.centerFrameOnDesktop(frame);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BookCopyAdd frame = new BookCopyAdd();
+					frame.setVisible(true);
+					frame.setSize(new Dimension(600, 450));
+					Util.centerFrameOnDesktop(frame);
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
@@ -149,18 +159,20 @@ public class BookCopyAdd {
 	
 	private void attachButtonListener(JButton a) {
 		a.addActionListener(e -> {
-			String isbn = isbnText.getText();
-			if (isbn == null || isbn.equals("")) {
-				librarySystem.displayMessage("Please enter an ISBN number", AppMsg.ERROR);
-			} else {
-				Book b = systemController.getBook(isbn);
+			try {
+				ruleSet.applyRules(BookCopyAdd.this);
+				Book b = systemController.getBook(getIsbnValue());
 				if(b != null) {
 					b.addCopy();
 					systemController.updateBook(b);
-					librarySystem.displayMessage("The book has been updated", AppMsg.SUCCESS);
+					JOptionPane.showMessageDialog(this, "New Book Copy for: " + b.getTitle() + " successfully added!",
+							"Add copy", JOptionPane.INFORMATION_MESSAGE, null);
 				} else {
-					librarySystem.displayMessage("Book doesn't exist", AppMsg.INFO);
+					throw new LibrarySystemException("Book doesn't exist");
 				}
+			} catch (LibrarySystemException exception) {
+				JOptionPane.showMessageDialog(this, exception.getMessage(),
+						"Update book error", JOptionPane.ERROR_MESSAGE, null);
 			}
 		});
 	}
