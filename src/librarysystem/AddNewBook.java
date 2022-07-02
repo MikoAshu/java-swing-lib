@@ -4,12 +4,13 @@ import business.Author;
 import business.ControllerInterface;
 import business.LibrarySystemException;
 import business.SystemController;
+import librarysystem.UI.LibrarySystemCustom;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class AddNewBook extends JFrame {
+public class AddNewBook extends JPanel {
     public JPanel getMainPanel() {
         return mainPanel;
     }
@@ -62,15 +63,23 @@ public class AddNewBook extends JFrame {
         defineOuterMiddle();
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(outerMiddle, BorderLayout.CENTER);
-        getContentPane().add(mainPanel);
+//        getContentPane().add(mainPanel);
     }
 
     public void defineTopPanel() {
         topPanel = new JPanel();
-        JLabel AddBookLabel = new JLabel("Add Book Title");
-        Util.adjustLabelFont(AddBookLabel, Util.DARK_BLUE, true);
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(AddBookLabel);
+        JButton backBtn = new JButton("<-");
+        backBtn.setBackground(Color.PINK.darker());
+        backBtn.setForeground(Color.black);
+        backButtonListener(backBtn);
+        topPanel.add(backBtn);
+    }
+
+    private void backButtonListener(JButton backBtn) {
+        backBtn.addActionListener(e -> {
+            mainPanel.removeAll();
+            LibrarySystemCustom.INSTANCE.renderMainPanel();
+        });
     }
 
     public void defineOuterMiddle() {
@@ -155,19 +164,19 @@ public class AddNewBook extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    AddNewBook frame = new AddNewBook();
-                    frame.setVisible(true);
-                    frame.setSize(new Dimension(600, 450));
-                    Util.centerFrameOnDesktop(frame);
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    AddNewBook frame = new AddNewBook();
+//                    frame.setVisible(true);
+//                    frame.setSize(new Dimension(600, 450));
+//                    Util.centerFrameOnDesktop(frame);
+//                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 }

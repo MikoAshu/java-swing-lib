@@ -3,6 +3,8 @@ package librarysystem;
 import business.ControllerInterface;
 import business.LibrarySystemException;
 import business.SystemController;
+import librarysystem.UI.LibrarySystemCustom;
+
 import javax.swing.JOptionPane;
 
 import javax.swing.*;
@@ -44,10 +46,11 @@ public class CheckoutBookPanel {
 
     private void defineTopPanel() {
         topPanel = new JPanel();
-//        JLabel label = new JLabel("Checkout Book");
-//        Util.adjustLabelFont(label, Util.DARK_BLUE, true);
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        topPanel.add(label);
+        JButton backBtn = new JButton("<-");
+        backBtn.setBackground(Color.PINK.darker());
+        backBtn.setForeground(Color.black);
+        backButtonListener(backBtn);
+        topPanel.add(backBtn);
     }
 
     private void defineMiddlePanel() {
@@ -94,7 +97,12 @@ public class CheckoutBookPanel {
         addCheckoutButtonListener(checkoutButton);
         lowerPanel.add(checkoutButton);
     }
-
+    private void backButtonListener(JButton backBtn) {
+        backBtn.addActionListener(e -> {
+            mainPanel.removeAll();
+            LibrarySystemCustom.INSTANCE.renderMainPanel();
+        });
+    }
     private void addCheckoutButtonListener(JButton checkoutBtn) {
         checkoutBtn.addActionListener(evt -> {
             String iSBNNo = isbnField.getText().trim();
