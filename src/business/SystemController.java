@@ -222,6 +222,36 @@ public class SystemController implements ControllerInterface {
         }
         return records;
     }
+	@Override
+	public List<String[]> getCheckedOutBookCopy(String isbn) throws LibrarySystemException {
+		DataAccess da = new DataAccessFacade();
+		List<String[]> records = new ArrayList<>();
+		Collection<LibraryMember> members = da.readMemberMap().values();
+		System.out.println(members);
+		for (LibraryMember member : members) {
+			System.out.println(member);
+			List<CheckoutRecordEntry> entries = member.getCheckoutRecord().getCheckoutRecordEntries();
+			for (CheckoutRecordEntry entry : entries) {
+				if (entry.getBookCopy().getBook().getIsbn().equals(isbn)) {
+					String pattern = "MM/dd/yyyy";
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+					String[] recs = new String[]{
+							member.getFirstName() + " " + member.getLastName(),
+							entry.getBookCopy().getBook().getTitle(),
+							entry.getBookCopy().getBook().getIsbn(),
+							Integer.toString(entry.getBookCopy().getCopyNum()),
+							simpleDateFormat.format((entry.getCheckoutDate().getTime())),
+							simpleDateFormat.format((entry.getDueDate().getTime())),
+							calculateOverdue(simpleDateFormat.format((entry.getCheckoutDate().getTime())),
+									simpleDateFormat.format((entry.getDueDate().getTime())),
+									entry.getBookCopy().getBook().getMaxCheckoutLength()) + " days",
+					};
+					records.add(recs);
+				}
+			}
+		}
+		return records;
+	}
 
 	public static Auth getCurrentAuth() {
 		return currentAuth;
@@ -283,6 +313,12 @@ public class SystemController implements ControllerInterface {
 		if (daysBetween < timeAllowed)
 			return 0;
 		return (int)daysBetween - timeAllowed;
+	}
+
+	@Override
+	public Collection<LibraryMember> getMembers() {
+		DataAccess da = new DataAccessFacade();
+		return da.readMemberMap().values();
 	}
 
 

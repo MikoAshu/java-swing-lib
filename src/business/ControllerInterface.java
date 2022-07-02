@@ -1,5 +1,6 @@
 package business;
 
+import java.util.Collection;
 import java.util.List;
 
 import business.Book;
@@ -29,4 +30,6 @@ public interface ControllerInterface {
 			throws LibrarySystemException;
 
 	int calculateOverdue(String startDate, String endDate, int timeAllowed);
+	Collection<LibraryMember> getMembers();
+	List<String[]> getCheckedOutBookCopy(String isbn) throws LibrarySystemException;
 }
