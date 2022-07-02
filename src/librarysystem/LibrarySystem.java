@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import business.ControllerInterface;
@@ -36,9 +37,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
     	LibrarySystem.INSTANCE,
 		LoginWindow.INSTANCE,
 		AllMemberIdsWindow.INSTANCE,	
-		AllBookIdsWindow.INSTANCE
+//		AllBookIdsWindow.INSTANCE
 	};
-    	
+    private LibrarySystem() {}
+    	    
 	public static void hideAllWindows() {
 		
 		for(LibWindow frame: allWindows) {
@@ -48,27 +50,25 @@ public class LibrarySystem extends JFrame implements LibWindow {
 	}
     
     public void showWindows(Auth auth) {
+    	this.auth = auth;
         if (auth == Auth.BOTH) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllBookIdsPage();
+        	showAllMembersPage();
         }
         else if (auth == Auth.ADMIN) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllMembersPage();
         }
         else if (auth == Auth.LIBRARIAN) {
-        	AllMemberIdsWindow.INSTANCE.init();
-        	AllMemberIdsWindow.INSTANCE.setVisible(true);
+        	showAllBookIdsPage();
         }
         else {
         	
         };
+        setMenuItems();
     }
    
     
-    
-    
-    private LibrarySystem() {}
+
     
     public void init() {
     	formatContentPane();
@@ -81,6 +81,20 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		isInitialized = true;
     }
     
+	public void displayMessage(String msg, AppMsg appMsg) {
+		if(appMsg == AppMsg.ERROR) {
+			  JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.INFO) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.WARNING) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		} else if (appMsg == AppMsg.SUCCESS) {
+			JOptionPane.showMessageDialog(INSTANCE, msg);   
+		}
+		
+
+	}
+	
     private void formatContentPane() {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1,1));
@@ -118,6 +132,34 @@ public class LibrarySystem extends JFrame implements LibWindow {
  	   options.add(allMemberIds);
     }
     
+    private void setMenuItems() {
+        options = new JMenu("Options");  
+  	   menuBar.add(options);
+  	   login = new JMenuItem("Logout");
+  	   login.addActionListener(new LoginListener());
+  	   allBookIds = new JMenuItem("All Book Ids");
+  	   allBookIds.addActionListener(new AllBookIdsListener());
+  	   allMemberIds = new JMenuItem("All Member Ids");
+  	   allMemberIds.addActionListener(new AllMemberIdsListener());
+  	   options.add(login);
+  	   options.add(allBookIds);
+  	   options.add(allMemberIds);
+        if (auth == null) {
+        	return;
+        } else if (auth == Auth.BOTH) {
+        	login = new JMenuItem("Logout");
+        }
+        else if (auth == Auth.ADMIN) {
+        	login = new JMenuItem("Logout");
+        }
+        else if (auth == Auth.LIBRARIAN) {
+        	login = new JMenuItem("Logout");
+        }
+        else {
+        	
+        };
+    }
+    
     class LoginListener implements ActionListener {
 
 		@Override
@@ -135,21 +177,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			LibrarySystem.hideAllWindows();
-			AllBookIdsWindow.INSTANCE.init();
-			
-			List<String> ids = ci.allBookIds();
-			Collections.sort(ids);
-			StringBuilder sb = new StringBuilder();
-			for(String s: ids) {
-				sb.append(s + "\n");
-			}
-			System.out.println(sb.toString());
-			AllBookIdsWindow.INSTANCE.setData(sb.toString());
-			AllBookIdsWindow.INSTANCE.pack();
-			//AllBookIdsWindow.INSTANCE.setSize(660,500);
-			Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
-			AllBookIdsWindow.INSTANCE.setVisible(true);
+			showAllBookIdsPage();
 			
 		}
     	
@@ -159,35 +187,55 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
     	@Override
 		public void actionPerformed(ActionEvent e) {
-			LibrarySystem.hideAllWindows();
-			AllMemberIdsWindow.INSTANCE.init();
-			AllMemberIdsWindow.INSTANCE.pack();
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
-			
-			
-			LibrarySystem.hideAllWindows();
-			AllBookIdsWindow.INSTANCE.init();
-			
-			List<String> ids = ci.allMemberIds();
-			Collections.sort(ids);
-			StringBuilder sb = new StringBuilder();
-			for(String s: ids) {
-				sb.append(s + "\n");
-			}
-			System.out.println(sb.toString());
-			AllMemberIdsWindow.INSTANCE.setData(sb.toString());
-			AllMemberIdsWindow.INSTANCE.pack();
-			//AllMemberIdsWindow.INSTANCE.setSize(660,500);
-			Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
-			AllMemberIdsWindow.INSTANCE.setVisible(true);
-			
+    		showAllMembersPage();	
 			
 		}
     	
     }
+    private void showAllBookIdsPage() {
+		LibrarySystem.hideAllWindows();
+//		AllBookIdsWindow.INSTANCE.init();
+		
+		List<String> ids = ci.allBookIds();
+		Collections.sort(ids);
+		StringBuilder sb = new StringBuilder();
+		for(String s: ids) {
+			sb.append(s + "\n");
+		}
+		System.out.println(sb.toString());
+//		AllBookIdsWindow.INSTANCE.setData(sb.toString());
+//		AllBookIdsWindow.INSTANCE.pack();
+		//AllBookIdsWindow.INSTANCE.setSize(660,500);
+//		Util.centerFrameOnDesktop(AllBookIdsWindow.INSTANCE);
+//		AllBookIdsWindow.INSTANCE.setVisible(true);
+    }
+    
+    private void showAllMembersPage() {
+		LibrarySystem.hideAllWindows();
+		AllMemberIdsWindow.INSTANCE.init();
+		AllMemberIdsWindow.INSTANCE.pack();
+		AllMemberIdsWindow.INSTANCE.setVisible(true);
+		
+		
+		LibrarySystem.hideAllWindows();
+//		AllBookIdsWindow.INSTANCE.init();
+		
+		List<String> ids = ci.allMemberIds();
+		Collections.sort(ids);
+		StringBuilder sb = new StringBuilder();
+		for(String s: ids) {
+			sb.append(s + "\n");
+		}
+		System.out.println(sb.toString());
+		AllMemberIdsWindow.INSTANCE.setData(sb.toString());
+		AllMemberIdsWindow.INSTANCE.pack();
+		AllMemberIdsWindow.INSTANCE.setSize(660,500);
+		Util.centerFrameOnDesktop(AllMemberIdsWindow.INSTANCE);
+		AllMemberIdsWindow.INSTANCE.setVisible(true);
+    }
 
 	@Override
-	public boolean isInitialized() {
+ 	public boolean isInitialized() {
 		return isInitialized;
 	}
 
