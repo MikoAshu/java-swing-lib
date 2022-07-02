@@ -1,6 +1,9 @@
 package business;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import dataaccess.Auth;
@@ -68,6 +71,43 @@ public class SystemController implements ControllerInterface {
         LibraryMember member = new LibraryMember(id, firstName, lastName, cell, address);
         da.saveMember(member);
     }
+
+	@Override
+	public List<String[]> getCheckedOutBookCopy(String isbn) throws LibrarySystemException {
+		DataAccess da = new DataAccessFacade();
+		List<String[]> records = new ArrayList<>();
+		Collection<LibraryMember> members = da.readMemberMap().values();
+		System.out.println(members);
+		for (LibraryMember member : members) {
+			System.out.println(member);
+			List<CheckoutRecordEntry> entries = member.getCheckoutRecord().getCheckoutRecordEntries();
+			for (CheckoutRecordEntry entry : entries) {
+				if (entry.getBookCopy().getBook().getIsbn().equals(isbn)) {
+					String pattern = "MM/dd/yyyy";
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+					String[] recs = new String[]{
+							member.getFirstName() + " " + member.getLastName(),
+							entry.getBookCopy().getBook().getTitle(),
+							entry.getBookCopy().getBook().getIsbn(),
+							Integer.toString(entry.getBookCopy().getCopyNum()),
+							simpleDateFormat.format((entry.getCheckoutDate().getTime())),
+							simpleDateFormat.format((entry.getDueDate().getTime())),
+							calculateOverdue(simpleDateFormat.format((entry.getCheckoutDate().getTime())),
+									simpleDateFormat.format((entry.getDueDate().getTime())),
+									entry.getBookCopy().getBook().getMaxCheckoutLength()) + " days",
+					};
+					records.add(recs);
+				}
+			}
+		}
+		return records;
+	}
+
+	@Override
+	public Collection<LibraryMember> getMembers() {
+		DataAccess da = new DataAccessFacade();
+		return da.readMemberMap().values();
+	}
 	@Override
     public LibraryMember searchMember(String memberId) {
         DataAccess da = new DataAccessFacade();
@@ -183,10 +223,15 @@ public class SystemController implements ControllerInterface {
         for (CheckoutRecordEntry ch : checkoutBooks) {
             String[] recs = new String[] {
                     memberId,
-                    ch.getBookCopy().getBook().getIsbn(),
-                    Integer.toString(ch.getBookCopy().getCopyNum()),
+					member.getFirstName() + " " + member.getLastName(),
+					ch.getBookCopy().getBook().getTitle(),
+					ch.getBookCopy().getBook().getIsbn(),
+					Integer.toString(ch.getBookCopy().getCopyNum()),
                     simpleDateFormat.format((ch.getCheckoutDate().getTime())),
                     simpleDateFormat.format((ch.getDueDate().getTime())),
+					calculateOverdue(simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+							simpleDateFormat.format((ch.getDueDate().getTime())),
+							ch.getBookCopy().getBook().getMaxCheckoutLength()) + " days",
             };
             records.add(recs);
         }
@@ -195,26 +240,48 @@ public class SystemController implements ControllerInterface {
 
     @Override
     public List<String[]> getMemberCheckoutEntries(String memberId) throws LibrarySystemException {
-        LibraryMember member = searchMember(memberId);
-        if (member == null) {
-            throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
-        }
-        List<CheckoutRecordEntry> checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
-        List<String[]> records = new ArrayList<>();
-        String pattern = "MM/dd/yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        for (CheckoutRecordEntry ch : checkoutBooks) {
-            String[] recs = new String[]{
-                    memberId,
-                    ch.getBookCopy().getBook().getIsbn(),
-                    Integer.toString(ch.getBookCopy().getCopyNum()),
-                    simpleDateFormat.format((ch.getCheckoutDate().getTime())),
-                    simpleDateFormat.format((ch.getDueDate().getTime())),
-            };
-            records.add(recs);
-        }
-        return records;
+		LibraryMember member = searchLibMember(memberId);
+		if (member == null) {
+			throw new LibrarySystemException("Member with with id '" + memberId + "' does not exist");
+		}
+		List<CheckoutRecordEntry> checkoutBooks = new ArrayList<>();
+
+		if(member.getCheckoutRecord() != null) {
+			checkoutBooks = member.getCheckoutRecord().getCheckoutRecordEntries();
+		}
+
+		List<String[]> records = new ArrayList<>();
+		String pattern = "MM/dd/yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		for (CheckoutRecordEntry ch : checkoutBooks) {
+			String[] recs = new String[] {
+					memberId,
+					member.getFirstName() + " " + member.getLastName(),
+					ch.getBookCopy().getBook().getTitle(),
+					ch.getBookCopy().getBook().getIsbn(),
+					Integer.toString(ch.getBookCopy().getCopyNum()),
+					simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+					simpleDateFormat.format((ch.getDueDate().getTime())),
+					calculateOverdue(simpleDateFormat.format((ch.getCheckoutDate().getTime())),
+							simpleDateFormat.format((ch.getDueDate().getTime())),
+							ch.getBookCopy().getBook().getMaxCheckoutLength()) + " days",
+			};
+			records.add(recs);
+		}
+		return records;
     }
+
+	@Override
+	public int calculateOverdue(String startDate, String endDate, int timeAllowed) {
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		LocalDate start = LocalDate.parse(startDate, df);
+		LocalDate end = LocalDate.parse(endDate, df);
+		long daysBetween = ChronoUnit.DAYS.between(start, end);
+		System.out.println(daysBetween);
+		if (daysBetween < timeAllowed)
+			return 0;
+		return (int)daysBetween - timeAllowed;
+	}
 
 	public static Auth getCurrentAuth() {
 		return currentAuth;

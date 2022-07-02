@@ -1,5 +1,6 @@
 package business;
 
+import java.util.Collection;
 import java.util.List;
 
 import business.Book;
@@ -27,4 +28,8 @@ public interface ControllerInterface {
 
 	Address createNewAddress(String street, String city, String state, String zip)
 			throws LibrarySystemException;
+
+	Collection<LibraryMember> getMembers();
+	List<String[]> getCheckedOutBookCopy(String isbn) throws LibrarySystemException;
+	int calculateOverdue(String startDate, String endDate, int timeAllowed);
 }

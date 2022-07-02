@@ -10,12 +10,7 @@ import javax.swing.border.EmptyBorder;
 import business.ControllerInterface;
 import business.SystemController;
 import dataaccess.Auth;
-import librarysystem.AddNewBook;
-import librarysystem.AllBookIdsWindow;
-import librarysystem.BookCopyAdd;
-import librarysystem.CheckoutBookPanel;
-import librarysystem.CheckoutRecordPanel;
-import librarysystem.LibrarySystem;
+import librarysystem.*;
 import panels.AddNewMember;
 
 import java.awt.GridBagLayout;
@@ -136,6 +131,7 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel addBookCopyPanel = abcp.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        addBookCopyPanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
 		        containerPanel.add(addBookCopyPanel);
 		        contentPane.add(containerPanel, gbc_menuPanel);
 		        lblMainLabel.setText("Add Book Copy");
@@ -157,19 +153,7 @@ public class LibrarySystemCustom extends JFrame {
 		btnAddMember.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				new AddNewMember();
-//				mem.
-////		        JPanel addBookCopyPanel = abcp.getMainPanel();
-//		        contentPane.remove(menuPanel);
-////		        addBookCopyPanel.setLayout(gbl_menuPanel);
-//		        
-////		        containerPanel.add(addBookCopyPanel);
-//		        lblMainLabel.setText("Add Member");
-////		        contentPane.add(mem, gbc_menuPanel);
-//		        frame.invalidate();
-//		        frame.validate();
-//		        frame.repaint();
 			}
 		});
 		GridBagConstraints gbc_btnAddMember = new GridBagConstraints();
@@ -188,6 +172,7 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel jpanel = pan.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
 		        containerPanel.add(jpanel);
 		        
 		        contentPane.add(containerPanel, gbc_menuPanel);
@@ -213,6 +198,7 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel jpanel = pan.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
 				containerPanel.add(jpanel);
 				contentPane.add(containerPanel, gbc_menuPanel);
 		        lblMainLabel.setText("Checkout Book");
@@ -238,6 +224,7 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel jpanel = pan.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
 		        containerPanel.add(jpanel);
 		        contentPane.add(containerPanel, gbc_menuPanel);
 		        
@@ -264,13 +251,13 @@ public class LibrarySystemCustom extends JFrame {
 		        JPanel jpanel = pan.getMainPanel();
 		        contentPane.remove(menuPanel);
 		        jpanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
 		        containerPanel.add(jpanel);
-
 				List<String> ids = ci.allBookIds();
 				Collections.sort(ids);
 				StringBuilder sb = new StringBuilder();
 				for(String s: ids) {
-					sb.append(s + "\n");
+					sb.append(s).append("\n");
 				}
 				pan.setData(sb.toString());
 
@@ -288,8 +275,34 @@ public class LibrarySystemCustom extends JFrame {
 		gbc_btnExit.gridx = 4;
 		gbc_btnExit.gridy = 2;
 		menuPanel.add(btnAllBooks, gbc_btnExit);
-		
-		
+//		---------------------------------------------
+		JButton overdue_books = new JButton("Overdue Books");
+		overdue_books.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CheckedOutBook pan = new CheckedOutBook();
+				JPanel jpanel = pan.getMainPanel();
+				contentPane.remove(menuPanel);
+				jpanel.setLayout(gbl_menuPanel);
+				containerPanel.removeAll();
+				containerPanel.add(jpanel);
+
+				contentPane.add(containerPanel, gbc_menuPanel);
+				lblMainLabel.setText("Overdue Books");
+				frame.invalidate();
+				frame.validate();
+				frame.repaint();
+			}
+		});
+		GridBagConstraints gbc_btnOverdue = new GridBagConstraints();
+		gbc_btnOverdue.gridheight = 2;
+		gbc_btnOverdue.fill = GridBagConstraints.BOTH;
+		gbc_btnOverdue.insets = new Insets(0, 0, 0, 5);
+		gbc_btnOverdue.gridx = 2;
+		gbc_btnOverdue.gridy = 4;
+		menuPanel.add(overdue_books, gbc_btnOverdue);
+
+//		---------------------------------------------
 		JButton btnLogout = new JButton("Exit");
 		btnLogout.addMouseListener(new MouseAdapter() {
 			@Override
@@ -311,6 +324,7 @@ public class LibrarySystemCustom extends JFrame {
 			btnAddBookCopy.setEnabled(false);
 			btnAddMember.setEnabled(false);
 			btnAddBook.setEnabled(false);
+			overdue_books.setEnabled(false);
 		} else if (role == Auth.ADMIN) {
 			btnCkoutBook.setEnabled(false);
 			btnVwCheckoutRecord.setEnabled(false);
@@ -323,17 +337,14 @@ public class LibrarySystemCustom extends JFrame {
 		if (frame != null) {
 			contentPane.removeAll();
 		}
-
-//		if (frame == null){
 			contentPane.add(menuPanel, gbc_menuPanel);
 			contentPane.add(topPanel, gbc_topPanel);
-//		}
 		
 		if (frame != null) {
 			lblMainLabel.setText("MIU - LMS");
 	        frame.revalidate();
 	        frame.repaint();
-		} 
+		}
 	}
 
 }

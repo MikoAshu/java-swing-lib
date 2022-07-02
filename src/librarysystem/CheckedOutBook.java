@@ -1,6 +1,7 @@
 package librarysystem;
 
 import business.ControllerInterface;
+import business.LibraryMember;
 import business.LibrarySystemException;
 import business.SystemController;
 import librarysystem.UI.LibrarySystemCustom;
@@ -10,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class CheckoutRecordPanel{
+public class CheckedOutBook {
     ControllerInterface sc = SystemController.getInstance();
     LibrarySystem librarySystem = LibrarySystem.INSTANCE;
 
@@ -21,7 +22,7 @@ public class CheckoutRecordPanel{
     private boolean tableDataSet;
     private final JPanel mainPanel;
 
-    private JTextField memberIdField;
+    private JTextField isbnField;
 
     private JButton searchButton;
 
@@ -29,7 +30,7 @@ public class CheckoutRecordPanel{
         return mainPanel;
     }
 
-    public CheckoutRecordPanel() {
+    public CheckedOutBook() {
         mainPanel = new JPanel();
         defineTopPanel();
         defineMiddlePanel();
@@ -41,12 +42,7 @@ public class CheckoutRecordPanel{
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         mainPanel.add(lowerPanel, BorderLayout.SOUTH);
     }
-    private void backButtonListener(JButton backBtn) {
-        backBtn.addActionListener(e -> {
-            mainPanel.removeAll();
-            LibrarySystemCustom.INSTANCE.renderMainPanel();
-        });
-    }
+
     private void defineTopPanel() {
         topPanel = new JPanel();
         JButton backBtn = new JButton("<-");
@@ -55,16 +51,21 @@ public class CheckoutRecordPanel{
         backButtonListener(backBtn);
         topPanel.add(backBtn);
     }
-
+    private void backButtonListener(JButton backBtn) {
+        backBtn.addActionListener(e -> {
+            mainPanel.removeAll();
+            LibrarySystemCustom.INSTANCE.renderMainPanel();
+        });
+    }
     private void defineMiddlePanel() {
         middlePanel = new JPanel();
         middlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel memberId = new JLabel("Member ID:");
-        middlePanel.add(memberId, FlowLayout.LEFT);
+        JLabel isbnLabel = new JLabel("ISBN: ");
+        middlePanel.add(isbnLabel, FlowLayout.LEFT);
 
-        memberIdField = new JTextField(15);
-        middlePanel.add(memberIdField, FlowLayout.CENTER);
+        isbnField = new JTextField(15);
+        middlePanel.add(isbnField, FlowLayout.CENTER);
 
         searchButton = new JButton("Search");
         searchButton.setBackground(Color.PINK.darker());
@@ -82,12 +83,12 @@ public class CheckoutRecordPanel{
     private void searchButtonListener(JButton searchBtn) {
         searchBtn.addActionListener(e -> {
             JScrollPane scrollPane;
-            String memberID = memberIdField.getText().trim();
-            if (memberID.length() == 0) {
+            String isbn = isbnField.getText().trim();
+            if (isbn.length() == 0) {
                 librarySystem.displayMessage("Member ID should not be empty", AppMsg.ERROR);
             } else {
                 try {
-                    List<String[]> records = sc.getMemberCheckoutEntries(memberID);
+                    List<String[]> records = sc.getCheckedOutBookCopy(isbn);
                     if (records.size() == 0)
                         librarySystem.displayMessage("No Records", AppMsg.INFO);
                     else {
@@ -101,12 +102,21 @@ public class CheckoutRecordPanel{
                             tableModel.addColumn("Due Date");
                             tableModel.addColumn("Overdue");
 
+
+
+
                             table = new JTable(tableModel);
 
                             for (String[] rec : records) {
                                 tableModel.addRow(rec);
                                 System.out.println(rec[4]);
                             }
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
+//                            tableModel.addRow(new String[]{});
 
                             table.setPreferredScrollableViewportSize(table.getPreferredSize());
                             table.setFillsViewportHeight(true);
