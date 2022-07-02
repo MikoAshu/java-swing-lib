@@ -93,8 +93,9 @@ public class CheckoutRecordPanel{
                     else {
                         if (!tableDataSet) {
                             DefaultTableModel tableModel = new DefaultTableModel();
+                            tableModel.addColumn("ID");
                             tableModel.addColumn("Member Name");
-                            tableModel.addColumn("Book");
+                            tableModel.addColumn("Title");
                             tableModel.addColumn("ISBN");
                             tableModel.addColumn("Copy Number");
                             tableModel.addColumn("Checkout Date");
